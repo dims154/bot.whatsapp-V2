@@ -1,0 +1,598 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id          String     @id @default(uuid())
+  name        String
+  code        String     @unique
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  businesses  Business[]
+  users       User[]
+  settings    Setting[]
+  roles       Role[]
+  permissions Permission[]
+}
+
+model Business {
+  id                String            @id @default(uuid())
+  tenant            Tenant            @relation(fields: [tenantId], references: [id])
+  tenantId          String
+  name              String
+  code              String            @unique
+  description       String?
+  active            Boolean           @default(true)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  groups            Group[]
+  customers         Customer[]
+  products          Product[]
+  orders            Order[]
+  transactions      Transaction[]
+  admins            Admin[]           @relation("BusinessAdmins")
+  channels          Channel[]
+  commands          Command[]         @relation("BusinessCommands")
+  categories        Category[]
+  payments          Payment[]
+  tickets           Ticket[]
+  broadcasts        Broadcast[]
+  vehicles          Vehicle[]
+  services          Service[]
+  expenses          Expense[]
+  expenseCategories ExpenseCategory[]
+  employees         Employee[]
+  inventories       Inventory[]
+  cashFlows         CashFlow[]
+  dailyReports      DailyReport[]
+  monthlyReports    MonthlyReport[]
+  yearlyReports     YearlyReport[]
+  financialReports  FinancialReport[]
+  aiEvents          AIEvent[]         @relation("BusinessAIEvents")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  tenant        Tenant         @relation(fields: [tenantId], references: [id])
+  tenantId      String
+  email         String         @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  avatarUrl     String?
+  active        Boolean        @default(true)
+  roles         Role[]         @relation("UserRoles")
+  permissions   Permission[]   @relation("UserPermissions")
+  sessions      Session[]
+  activityLogs  ActivityLog[]
+  refreshTokens RefreshToken[]
+  admin         Admin?         @relation("UserAdmin")
+  employee      Employee?
+  auditLogs     AuditLog[]     @relation("UserAuditLogs")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  token     String   @unique
+  revoked   Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  tenant      Tenant       @relation(fields: [tenantId], references: [id])
+  tenantId    String
+  name        String
+  guard       String       @default("api")
+  description String?
+  permissions Permission[] @relation("RolePermissions")
+  users       User[]       @relation("UserRoles")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId    String
+  name        String
+  guard       String   @default("api")
+  description String?
+  roles       Role[]   @relation("RolePermissions")
+  users       User[]   @relation("UserPermissions")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Admin {
+  id         String   @id @default(uuid())
+  user       User     @relation("UserAdmin", fields: [userId], references: [id])
+  userId     String   @unique
+  business   Business @relation("BusinessAdmins", fields: [businessId], references: [id])
+  businessId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Customer {
+  id           String        @id @default(uuid())
+  business     Business      @relation(fields: [businessId], references: [id])
+  businessId   String
+  name         String
+  phone        String
+  email        String?
+  address      String?
+  metadata     Json?
+  groups       Group[]       @relation("CustomerGroups")
+  vehicles     Vehicle[]     @relation("CustomerVehicles")
+  orders       Order[]
+  tickets      Ticket[]
+  transactions Transaction[] @relation("CustomerTransactions")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Group {
+  id          String         @id @default(uuid())
+  business    Business       @relation(fields: [businessId], references: [id])
+  businessId  String
+  name        String
+  description String?
+  active      Boolean        @default(true)
+  settings    GroupSetting[]
+  channels    Channel[]      @relation("GroupChannels")
+  commands    Command[]      @relation("GroupCommands")
+  customers   Customer[]     @relation("CustomerGroups")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model GroupSetting {
+  id        String   @id @default(uuid())
+  group     Group    @relation(fields: [groupId], references: [id])
+  groupId   String
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Channel {
+  id            String        @id @default(uuid())
+  business      Business      @relation(fields: [businessId], references: [id])
+  businessId    String
+  provider      Provider      @relation("ProviderChannels", fields: [providerId], references: [id])
+  providerId    String
+  group         Group?        @relation("GroupChannels", fields: [groupId], references: [id])
+  groupId       String?
+  type          String
+  name          String
+  configuration Json
+  active        Boolean       @default(true)
+  sessions      Session[]
+  messages      Message[]
+  orders        Order[]       @relation("ChannelOrders")
+  transactions  Transaction[] @relation("ChannelTransactions")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+}
+
+model Provider {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  type      String
+  metadata  Json?
+  active    Boolean   @default(true)
+  channels  Channel[] @relation("ProviderChannels")
+  payments  Payment[] @relation("ProviderPayments")
+  aiEvents  AIEvent[] @relation("ProviderAIEvents")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Session {
+  id        String    @id @default(uuid())
+  channel   Channel   @relation(fields: [channelId], references: [id])
+  channelId String
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+  active    Boolean   @default(true)
+  metadata  Json?
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  session   Session  @relation(fields: [sessionId], references: [id])
+  sessionId String
+  channel   Channel? @relation(fields: [channelId], references: [id])
+  channelId String?
+  ticket    Ticket?  @relation("TicketMessages", fields: [ticketId], references: [id])
+  ticketId  String?
+  sender    String
+  content   String
+  type      String
+  direction String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model Command {
+  id          String   @id @default(uuid())
+  business    Business @relation("BusinessCommands", fields: [businessId], references: [id])
+  businessId  String
+  group       Group?   @relation("GroupCommands", fields: [groupId], references: [id])
+  groupId     String?
+  name        String
+  description String?
+  module      String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  business    Business  @relation(fields: [businessId], references: [id])
+  businessId  String
+  name        String
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id               String            @id @default(uuid())
+  business         Business          @relation(fields: [businessId], references: [id])
+  businessId       String
+  category         Category?         @relation(fields: [categoryId], references: [id])
+  categoryId       String?
+  name             String
+  sku              String?           @unique
+  price            Float
+  type             String
+  metadata         Json?
+  active           Boolean           @default(true)
+  orderItems       OrderItem[]
+  transactionItems TransactionItem[]
+  inventories      Inventory[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  business    Business    @relation(fields: [businessId], references: [id])
+  businessId  String
+  customer    Customer?   @relation(fields: [customerId], references: [id])
+  customerId  String?
+  channel     Channel?    @relation("ChannelOrders", fields: [channelId], references: [id])
+  channelId   String?
+  status      String      @default("pending")
+  totalAmount Float       @default(0)
+  metadata    Json?
+  items       OrderItem[]
+  payments    Payment[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int      @default(1)
+  unitPrice Float
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id         String       @id @default(uuid())
+  order      Order?       @relation(fields: [orderId], references: [id])
+  orderId    String?
+  business   Business     @relation(fields: [businessId], references: [id])
+  businessId String
+  provider   Provider     @relation("ProviderPayments", fields: [providerId], references: [id])
+  providerId String
+  amount     Float
+  currency   String       @default("IDR")
+  status     String       @default("pending")
+  metadata   Json?
+  logs       PaymentLog[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model PaymentLog {
+  id        String   @id @default(uuid())
+  payment   Payment  @relation(fields: [paymentId], references: [id])
+  paymentId String
+  message   String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model Ticket {
+  id         String    @id @default(uuid())
+  business   Business  @relation(fields: [businessId], references: [id])
+  businessId String
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  customerId String
+  subject    String
+  status     String    @default("open")
+  priority   String    @default("normal")
+  messages   Message[] @relation("TicketMessages")
+  metadata   Json?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Broadcast {
+  id         String    @id @default(uuid())
+  business   Business  @relation(fields: [businessId], references: [id])
+  businessId String
+  name       String
+  content    String
+  recipient  Json
+  status     String    @default("draft")
+  sentAt     DateTime?
+  metadata   Json?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Transaction {
+  id            String            @id @default(uuid())
+  business      Business          @relation(fields: [businessId], references: [id])
+  businessId    String
+  customer      Customer?         @relation("CustomerTransactions", fields: [customerId], references: [id])
+  customerId    String?
+  channel       Channel?          @relation("ChannelTransactions", fields: [channelId], references: [id])
+  channelId     String?
+  type          String
+  status        String            @default("completed")
+  totalAmount   Float
+  paymentMethod String?
+  items         TransactionItem[]
+  metadata      Json?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model TransactionItem {
+  id            String      @id @default(uuid())
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId String
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     String
+  quantity      Int         @default(1)
+  unitPrice     Float
+  metadata      Json?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Vehicle {
+  id          String   @id @default(uuid())
+  business    Business @relation(fields: [businessId], references: [id])
+  businessId  String
+  owner       Customer @relation("CustomerVehicles", fields: [customerId], references: [id])
+  customerId  String
+  plateNumber String
+  type        String
+  model       String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  business    Business @relation(fields: [businessId], references: [id])
+  businessId  String
+  name        String
+  description String?
+  price       Float
+  serviceType String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model Expense {
+  id          String          @id @default(uuid())
+  business    Business        @relation(fields: [businessId], references: [id])
+  businessId  String
+  category    ExpenseCategory @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  amount      Float
+  description String?
+  metadata    Json?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now())
+}
+
+model ExpenseCategory {
+  id          String    @id @default(uuid())
+  business    Business  @relation(fields: [businessId], references: [id])
+  businessId  String
+  name        String
+  description String?
+  expenses    Expense[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+}
+
+model Employee {
+  id         String       @id @default(uuid())
+  business   Business     @relation(fields: [businessId], references: [id])
+  businessId String
+  user       User         @relation(fields: [userId], references: [id])
+  userId     String       @unique
+  title      String?
+  department String?
+  metadata   Json?
+  attendance Attendance[]
+  salary     Salary[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+}
+
+model Attendance {
+  id         String   @id @default(uuid())
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String
+  date       DateTime
+  status     String   @default("present")
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+}
+
+model Salary {
+  id         String   @id @default(uuid())
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String
+  amount     Float
+  currency   String   @default("IDR")
+  period     String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+}
+
+model Inventory {
+  id         String         @id @default(uuid())
+  business   Business       @relation(fields: [businessId], references: [id])
+  businessId String
+  product    Product        @relation(fields: [productId], references: [id])
+  productId  String
+  quantity   Int            @default(0)
+  minimum    Int            @default(0)
+  metadata   Json?
+  logs       InventoryLog[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @default(now())
+}
+
+model InventoryLog {
+  id          String    @id @default(uuid())
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId String
+  change      Int
+  reason      String
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+}
+
+model CashFlow {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String
+  date       DateTime
+  inflow     Float    @default(0)
+  outflow    Float    @default(0)
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
+
+model DailyReport {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String
+  date       DateTime
+  data       Json
+  createdAt  DateTime @default(now())
+}
+
+model MonthlyReport {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String
+  year       Int
+  month      Int
+  data       Json
+  createdAt  DateTime @default(now())
+}
+
+model YearlyReport {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String
+  year       Int
+  data       Json
+  createdAt  DateTime @default(now())
+}
+
+model FinancialReport {
+  id         String   @id @default(uuid())
+  business   Business @relation(fields: [businessId], references: [id])
+  businessId String
+  period     String
+  type       String
+  data       Json
+  createdAt  DateTime @default(now())
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  action    String
+  context   Json?
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  user      User?    @relation("UserAuditLogs", fields: [userId], references: [id])
+  userId    String?
+  action    String
+  target    String
+  changes   Json?
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model AIEvent {
+  id         String   @id @default(uuid())
+  business   Business @relation("BusinessAIEvents", fields: [businessId], references: [id])
+  businessId String
+  provider   Provider @relation("ProviderAIEvents", fields: [providerId], references: [id])
+  providerId String
+  prompt     String
+  response   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  tenantId  String
+  key       String
+  value     String
+  scope     String   @default("tenant")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
