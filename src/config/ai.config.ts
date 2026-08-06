@@ -12,9 +12,10 @@ export const aiConfig = {
         "gemini-flash-latest",
 
     // Model khusus planner
-    plannerModel:
-        process.env.AI_PLANNER_MODEL ??
-        "gemini-2.5-flash",
+   plannerModel:
+    process.env.AI_PLANNER_MODEL ??
+    process.env.AI_MODEL ??
+    "gemini-flash-latest",
 
     geminiKey:
         process.env.GEMINI_API_KEY ??

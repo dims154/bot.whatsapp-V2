@@ -1,21 +1,29 @@
-import { aiPipeline } from "../apps/bot/ai/pipeline/pipeline.container";
+import { ToolStage } from "../apps/bot/ai/pipeline/stages/ToolStage";
 
-(async () => {
+async function main() {
 
-    const result = await aiPipeline.run({
+    const stage = new ToolStage();
 
-        chatId: "123",
+    const context = {
 
-        prompt: "Jam berapa sekarang?",
+        chatId: "test",
+
+        prompt: "Hitung 250 * 90",
 
         history: "",
 
-        persona: "",
+        messages: [],
 
-        messages: []
+        persona: "test"
 
-    });
+    };
+
+    const result = await stage.execute(context);
+
+    console.log("========== RESULT ==========");
 
     console.log(result.toolResults);
 
-})();
+}
+
+main();

@@ -1,28 +1,34 @@
-export const ToolPlanSchema = {
+import { Schema, Type } from "@google/genai";
 
-    type: "object",
+export const ToolPlanSchema: Schema = {
+
+    type: Type.OBJECT,
 
     properties: {
 
         tools: {
 
-            type: "array",
+            type: Type.ARRAY,
 
             items: {
 
-                type: "object",
+                type: Type.OBJECT,
 
                 properties: {
 
                     tool: {
 
-                        type: "string"
+                        type: Type.STRING,
+
+                        description: "Nama tool yang akan dipanggil."
 
                     },
 
                     input: {
 
-                        type: "string"
+                        type: Type.STRING,
+
+                        description: "Input untuk tool."
 
                     }
 
@@ -48,4 +54,4 @@ export const ToolPlanSchema = {
 
     ]
 
-} as const;
+};
