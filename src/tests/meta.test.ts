@@ -42,7 +42,7 @@ const payload = {
         isAdmin: true,
         isOwner: true,
 
-        reply: async (_message: string) => {}
+        
 
     });
 

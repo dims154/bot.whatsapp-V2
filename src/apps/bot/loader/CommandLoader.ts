@@ -1,5 +1,7 @@
 import { CommandRegistry } from "../registry/CommandRegistry";
+
 import { PingCommand } from "../commands/ping.command";
+import { AICommand } from "../commands/ai.command";
 
 export class CommandLoader {
 
@@ -11,6 +13,10 @@ export class CommandLoader {
 
         this.registry.register(
             new PingCommand()
+        );
+
+        this.registry.register(
+            new AICommand()
         );
 
     }

@@ -1,0 +1,37 @@
+import "./environment";
+
+export const aiConfig = {
+
+    provider:
+        process.env.AI_PROVIDER ??
+        "gemini",
+
+    // Model utama untuk chat
+    model:
+        process.env.AI_MODEL ??
+        "gemini-flash-latest",
+
+    // Model khusus planner
+    plannerModel:
+        process.env.AI_PLANNER_MODEL ??
+        "gemini-2.5-flash",
+
+    geminiKey:
+        process.env.GEMINI_API_KEY ??
+        "",
+
+    openaiKey:
+        process.env.OPENAI_API_KEY ??
+        "",
+
+    claudeKey:
+        process.env.CLAUDE_API_KEY ??
+        "",
+
+    deepseekKey:
+        process.env.DEEPSEEK_API_KEY ??
+        ""
+
+};
+
+console.log(aiConfig);

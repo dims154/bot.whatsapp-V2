@@ -1,5 +1,6 @@
 import { ICommandContext } from "../commands/interfaces/ICommandContext";
 import { messageProvider } from "../providers";
+import { CommandContextData } from "./CommandContextData";
 
 export class CommandContext implements ICommandContext {
 
@@ -19,7 +20,7 @@ export class CommandContext implements ICommandContext {
 
     isOwner: boolean;
 
-    constructor(data: ICommandContext) {
+    constructor(data: CommandContextData) {
 
         this.sender = data.sender;
         this.chatId = data.chatId;

@@ -1,4 +1,4 @@
-export interface ICommandContext {
+export interface CommandContextData {
 
     sender: string;
 
@@ -15,7 +15,5 @@ export interface ICommandContext {
     isAdmin: boolean;
 
     isOwner: boolean;
-
-    reply(message: string): Promise<void>;
 
 }

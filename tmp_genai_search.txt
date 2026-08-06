@@ -1,0 +1,641 @@
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\node\index.cjs
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+                    console.warn("Warning: The SDK's ephemeral token support is in v1alpha only. Please use const ai = new GoogleGenAI({apiKey: token.name, httpOptions: { apiVersion: 'v1alpha' }}); before session connection.");
+     * const ai = new GoogleGenAI({
+class GoogleGenAISecurityProvider {
+    async resolveGoogleGenAISecurity(url) {
+class GoogleGenAIAuthHook {
+        return securitySource.resolveGoogleGenAISecurity(requestURL);
+        "resolveGoogleGenAISecurity" in value &&
+        typeof value.resolveGoogleGenAISecurity === "function");
+class GoogleGenAiError extends Error {
+        this.name = "GoogleGenAiError";
+    if (error instanceof GoogleGenAiError) {
+    const googleGenAIAuthHook = new GoogleGenAIAuthHook();
+    hooks.registerBeforeCreateRequestHook(googleGenAIAuthHook);
+    hooks.registerBeforeRequestHook(googleGenAIAuthHook);
+class GoogleGenAiDefaultError extends GoogleGenAiError {
+        this.name = "GoogleGenAiDefaultError";
+                    error: new GoogleGenAiDefaultError("Unexpected Status or Content-Type", {
+                    error: new GoogleGenAiDefaultError("API error occurred", {
+class CancelInteractionByIdServerError extends GoogleGenAiError {
+class CancelInteractionByIdClientError extends GoogleGenAiError {
+class CreateInteractionServerError extends GoogleGenAiError {
+class CreateInteractionClientError extends GoogleGenAiError {
+class DeleteInteractionServerError extends GoogleGenAiError {
+class DeleteInteractionClientError extends GoogleGenAiError {
+class GetInteractionByIdServerError extends GoogleGenAiError {
+class GetInteractionByIdClientError extends GoogleGenAiError {
+let GoogleGenAI$1 = class GoogleGenAI extends ClientSDK {
+function getGoogleGenAIServerURL(parentClient) {
+function getGoogleGenAIAPIVersion(parentClient) {
+function buildGoogleGenAIClient(parentClient, options = {}) {
+    const sdk = new GoogleGenAI$1(Object.assign(Object.assign({}, options), { api_version: (_a = options.api_version) !== null && _a !== void 0 ? _a : getGoogleGenAIAPIVersion(parentClient), security: (_b = options.security) !== null && _b !== void 0 ? _b : new GoogleGenAISecurityProvider({
+        }), server_url: (_e = options.server_url) !== null && _e !== void 0 ? _e : getGoogleGenAIServerURL(parentClient) }));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.create(Object.assign(Object.assign({}, request), { stream: true, api_version }), toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsCreate(this.getClient(api_version), request, api_version, toGoogleGenAIRequestOptions(options)));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.get(id, { stream, last_event_id, include_input, api_version }, toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsGet(this.getClient(api_version), id, stream, last_event_id, include_input, api_version, toGoogleGenAIRequestOptions(options)));
+        return wrapSDKCall(() => this.getClient(params === null || params === void 0 ? void 0 : params.api_version).interactions.delete(id, { api_version: params === null || params === void 0 ? void 0 : params.api_version }, toGoogleGenAIRequestOptions(options)));
+        return addOutputPropertiesIfInteraction(await unwrapWithSdkHttpResponse(interactionsCancel(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options))));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(agentsCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsList(this.getClient(api_version), api_version, pageSize, pageToken, parent, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(webhooksCreate(this.getClient(), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksList(this.getClient(), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksGet(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksUpdate(this.getClient(), id, api_version, update_mask, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksDelete(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksRotateSigningSecret(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksPing(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(triggersCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersList(this.getClient(api_version), api_version, filter, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersUpdate(this.getClient(api_version), id, body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersRun(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), trigger_id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersListExecutions(this.getClient(api_version), trigger_id, api_version, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+function toGoogleGenAIRequestOptions(options, streaming = false) {
+        console.warn(`GoogleGenAI.interactions: request option ${name} is not supported by the Google GenAI interactions bridge and will be ignored.`);
+        return unwrapWithSdkHttpResponse(environmentsCreateEnvironment(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsListEnvironments(this.getClient(api_version), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsGetEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsDeleteEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be
+ * set. When using Vertex AI, both {@link GoogleGenAIOptions.project} and {@link
+ * GoogleGenAIOptions.location} must be set, or a {@link
+ * GoogleGenAIOptions.apiKey} must be set when using Express Mode.
+ * Explicitly passed in values in {@link GoogleGenAIOptions} will always take
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+class GoogleGenAI {
+            this._nextGenClient = buildGoogleGenAIClient(this.apiClient, {
+            console.warn('GoogleGenAI: Client level httpOptions.extraBody is not supported by the Gemini NextGen client and will be ignored.');
+        console.warn('GoogleGenAI.agents: Agents usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.triggers: Triggers usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.environments: Environments usage is experimental and may change in future versions.');
+exports.GoogleGenAI = GoogleGenAI;
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\node\index.mjs
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+                    console.warn("Warning: The SDK's ephemeral token support is in v1alpha only. Please use const ai = new GoogleGenAI({apiKey: token.name, httpOptions: { apiVersion: 'v1alpha' }}); before session connection.");
+     * const ai = new GoogleGenAI({
+class GoogleGenAISecurityProvider {
+    async resolveGoogleGenAISecurity(url) {
+class GoogleGenAIAuthHook {
+        return securitySource.resolveGoogleGenAISecurity(requestURL);
+        "resolveGoogleGenAISecurity" in value &&
+        typeof value.resolveGoogleGenAISecurity === "function");
+class GoogleGenAiError extends Error {
+        this.name = "GoogleGenAiError";
+    if (error instanceof GoogleGenAiError) {
+    const googleGenAIAuthHook = new GoogleGenAIAuthHook();
+    hooks.registerBeforeCreateRequestHook(googleGenAIAuthHook);
+    hooks.registerBeforeRequestHook(googleGenAIAuthHook);
+class GoogleGenAiDefaultError extends GoogleGenAiError {
+        this.name = "GoogleGenAiDefaultError";
+                    error: new GoogleGenAiDefaultError("Unexpected Status or Content-Type", {
+                    error: new GoogleGenAiDefaultError("API error occurred", {
+class CancelInteractionByIdServerError extends GoogleGenAiError {
+class CancelInteractionByIdClientError extends GoogleGenAiError {
+class CreateInteractionServerError extends GoogleGenAiError {
+class CreateInteractionClientError extends GoogleGenAiError {
+class DeleteInteractionServerError extends GoogleGenAiError {
+class DeleteInteractionClientError extends GoogleGenAiError {
+class GetInteractionByIdServerError extends GoogleGenAiError {
+class GetInteractionByIdClientError extends GoogleGenAiError {
+let GoogleGenAI$1 = class GoogleGenAI extends ClientSDK {
+function getGoogleGenAIServerURL(parentClient) {
+function getGoogleGenAIAPIVersion(parentClient) {
+function buildGoogleGenAIClient(parentClient, options = {}) {
+    const sdk = new GoogleGenAI$1(Object.assign(Object.assign({}, options), { api_version: (_a = options.api_version) !== null && _a !== void 0 ? _a : getGoogleGenAIAPIVersion(parentClient), security: (_b = options.security) !== null && _b !== void 0 ? _b : new GoogleGenAISecurityProvider({
+        }), server_url: (_e = options.server_url) !== null && _e !== void 0 ? _e : getGoogleGenAIServerURL(parentClient) }));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.create(Object.assign(Object.assign({}, request), { stream: true, api_version }), toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsCreate(this.getClient(api_version), request, api_version, toGoogleGenAIRequestOptions(options)));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.get(id, { stream, last_event_id, include_input, api_version }, toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsGet(this.getClient(api_version), id, stream, last_event_id, include_input, api_version, toGoogleGenAIRequestOptions(options)));
+        return wrapSDKCall(() => this.getClient(params === null || params === void 0 ? void 0 : params.api_version).interactions.delete(id, { api_version: params === null || params === void 0 ? void 0 : params.api_version }, toGoogleGenAIRequestOptions(options)));
+        return addOutputPropertiesIfInteraction(await unwrapWithSdkHttpResponse(interactionsCancel(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options))));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(agentsCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsList(this.getClient(api_version), api_version, pageSize, pageToken, parent, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(webhooksCreate(this.getClient(), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksList(this.getClient(), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksGet(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksUpdate(this.getClient(), id, api_version, update_mask, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksDelete(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksRotateSigningSecret(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksPing(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(triggersCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersList(this.getClient(api_version), api_version, filter, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersUpdate(this.getClient(api_version), id, body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersRun(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), trigger_id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersListExecutions(this.getClient(api_version), trigger_id, api_version, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+function toGoogleGenAIRequestOptions(options, streaming = false) {
+        console.warn(`GoogleGenAI.interactions: request option ${name} is not supported by the Google GenAI interactions bridge and will be ignored.`);
+        return unwrapWithSdkHttpResponse(environmentsCreateEnvironment(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsListEnvironments(this.getClient(api_version), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsGetEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsDeleteEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be
+ * set. When using Vertex AI, both {@link GoogleGenAIOptions.project} and {@link
+ * GoogleGenAIOptions.location} must be set, or a {@link
+ * GoogleGenAIOptions.apiKey} must be set when using Express Mode.
+ * Explicitly passed in values in {@link GoogleGenAIOptions} will always take
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+class GoogleGenAI {
+            this._nextGenClient = buildGoogleGenAIClient(this.apiClient, {
+            console.warn('GoogleGenAI: Client level httpOptions.extraBody is not supported by the Gemini NextGen client and will be ignored.');
+        console.warn('GoogleGenAI.agents: Agents usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.triggers: Triggers usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.environments: Environments usage is experimental and may change in future versions.');
+export { ActivityHandling, AdapterSize, AggregationMetric, ApiError, ApiSpec, AspectRatio, AudioResponseFormat, AuthType, Batches, Behavior, BlockedReason, Caches, CancelTuningJobResponse, Chat, Chats, ComputeTokensResponse, ContentReferenceImage, ControlReferenceImage, ControlReferenceType, CountTokensResponse, CreateFileResponse, DeleteCachedContentResponse, DeleteFileResponse, DeleteModelResponse, Delivery, DocumentState, DynamicRetrievalConfigMode, EditImageResponse, EditMode, EmbedContentResponse, EmbeddingApiType, EndSensitivity, Environment, EvaluateDatasetResponse, FeatureSelectionPreference, FileSource, FileState, Files, FinishReason, FunctionCallingConfigMode, FunctionResponse, FunctionResponseBlob, FunctionResponseFileData, FunctionResponsePart, FunctionResponseScheduling, GenerateContentResponse, GenerateContentResponsePromptFeedback, GenerateContentResponseUsageMetadata, GenerateImagesResponse, GenerateVideosOperation, GenerateVideosResponse, GoogleGenAI, HarmBlockMethod, HarmBlockThreshold, HarmCategory, HarmProbability, HarmSeverity, HttpElementLocation, HttpResponse, ImagePromptLanguage, ImageResizeMode, ImageResponseFormat, ImageSize, ImportFileOperation, ImportFileResponse, InlinedEmbedContentResponse, InlinedResponse, JobState, Language, ListBatchJobsResponse, ListCachedContentsResponse, ListDocumentsResponse, ListFileSearchStoresResponse, ListFilesResponse, ListModelsResponse, ListTuningJobsResponse, Live, LiveClientToolResponse, LiveMusicPlaybackControl, LiveMusicServerMessage, LiveSendToolResponseParameters, LiveServerMessage, MaskReferenceImage, MaskReferenceMode, MatchOperation, MediaModality, MediaResolution, Modality, ModelStage, Models, MusicGenerationMode, Operations, Outcome, PagedItem, Pager, PairwiseChoice, PartMediaResolutionLevel, PersonGeneration, PhishBlockThreshold, ProminentPeople, RawReferenceImage, RecontextImageResponse, RegisterFilesResponse, ReinforcementTuningAutoraterScorerParsedResponseConversionScorer, ReinforcementTuningParseResponseConfig, ReinforcementTuningThinkingLevel, ReplayResponse, ResourceScope, ResponseFormat, ResponseParseType, SafetyFilterLevel, SafetyPolicy, Scale, SegmentImageResponse, SegmentMode, ServiceTier, Session, SingleEmbedContentResponse, StartSensitivity, StyleReferenceImage, SubjectReferenceImage, SubjectReferenceType, TextResponseFormat, ThinkingLevel, Tokens, ToolResponse, ToolType, TrafficType, TuningJobState, TuningMethod, TuningMode, TuningSpeed, TuningTask, TurnCompleteReason, TurnCoverage, Type, UploadToFileSearchStoreOperation, UploadToFileSearchStoreResponse, UploadToFileSearchStoreResumableResponse, UpscaleImageResponse, UrlRetrievalStatus, VadSignalType, ValidateRewardResponse, VideoCompressionQuality, VideoGenerationMaskMode, VideoGenerationReferenceType, VideoOrientation, VideoResponseFormat, VoiceActivityType, createFunctionResponsePartFromBase64, createFunctionResponsePartFromUri, createModelContent, createPartFromBase64, createPartFromCodeExecutionResult, createPartFromExecutableCode, createPartFromFunctionCall, createPartFromFunctionResponse, createPartFromText, createPartFromUri, createUserContent, mcpToTool, setDefaultBaseUrls };
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\node\node.d.ts
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params?: CreateAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.Agent>;
+    list(params?: ListAgentsParams_2 | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.AgentListResponse>;
+    get(id: string, params?: GetAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.Agent>;
+    delete(id: string, params?: DeleteAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    }, options?: GoogleGenAIRequestOptions): Promise<environments.Environment>;
+    list(params?: ListEnvironmentsParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<environments.ListEnvironmentsResponse>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<environments.Environment>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params: CreateModelInteractionParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: CreateAgentInteractionParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: CreateModelInteractionParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: CreateAgentInteractionParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: InteractionCreateParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: InteractionCreateParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: InteractionCreateParams, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction | Stream<GoogleGenAIInteractionSSEEvent>>;
+    get(id: string, params?: InteractionGetParamsNonStreaming | null, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    get(id: string, params: InteractionGetParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    get(id: string, params?: InteractionGetParams | null, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction | Stream<GoogleGenAIInteractionSSEEvent>>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<unknown>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params: CreateTriggerParams, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    list(params?: ListTriggersParams_2 | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.ListTriggersResponse>;
+    get(id: string, params?: GetTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    update(id: string, params: UpdateTriggerParams, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    delete(id: string, params?: DeleteTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    run(trigger_id: string, params?: RunTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.TriggerExecution>;
+    listExecutions(trigger_id: string, params?: ListTriggerExecutionsParams_2 | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.ListTriggerExecutionsResponse>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    }, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    list(params?: WebhookListParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookListResponse>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    update(id: string, params?: WebhookUpdateParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    rotateSigningSecret(id: string, params?: WebhookRotateSigningSecretParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookRotateSigningSecretResponse>;
+    ping(id: string, params?: WebhookPingParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookPingResponse>;
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be
+ * set. When using Vertex AI, both {@link GoogleGenAIOptions.project} and {@link
+ * GoogleGenAIOptions.location} must be set, or a {@link
+ * GoogleGenAIOptions.apiKey} must be set when using Express Mode.
+ * Explicitly passed in values in {@link GoogleGenAIOptions} will always take
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+export declare class GoogleGenAI {
+    constructor(options: GoogleGenAIOptions);
+declare type GoogleGenAIInteraction = GoogleGenAIResponseWithSdkHttpResponse<Omit<interactions.Interaction, "steps"> & {
+declare type GoogleGenAIInteractionSSEEvent = interactions.InteractionSSEEvent;
+ * See {@link GoogleGenAI} for usage samples.
+export declare interface GoogleGenAIOptions {
+declare interface GoogleGenAIParentClient {
+declare type GoogleGenAIRequestOptions = RequestOptions & {
+declare type GoogleGenAIResponseWithSdkHttpResponse<T> = T & {
+    sdkHttpResponse?: GoogleGenAISdkHttpResponse;
+declare type GoogleGenAISdkHttpResponse = {
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+     * const ai = new GoogleGenAI({
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\tokenizer\node.cjs
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\tokenizer\node.d.ts
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\tokenizer\node.mjs
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\vertex_internal\index.cjs
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\vertex_internal\index.d.ts
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\web\index.mjs
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+                    console.warn("Warning: The SDK's ephemeral token support is in v1alpha only. Please use const ai = new GoogleGenAI({apiKey: token.name, httpOptions: { apiVersion: 'v1alpha' }}); before session connection.");
+     * const ai = new GoogleGenAI({
+class GoogleGenAISecurityProvider {
+    async resolveGoogleGenAISecurity(url) {
+class GoogleGenAIAuthHook {
+        return securitySource.resolveGoogleGenAISecurity(requestURL);
+        "resolveGoogleGenAISecurity" in value &&
+        typeof value.resolveGoogleGenAISecurity === "function");
+class GoogleGenAiError extends Error {
+        this.name = "GoogleGenAiError";
+    if (error instanceof GoogleGenAiError) {
+    const googleGenAIAuthHook = new GoogleGenAIAuthHook();
+    hooks.registerBeforeCreateRequestHook(googleGenAIAuthHook);
+    hooks.registerBeforeRequestHook(googleGenAIAuthHook);
+class GoogleGenAiDefaultError extends GoogleGenAiError {
+        this.name = "GoogleGenAiDefaultError";
+                    error: new GoogleGenAiDefaultError("Unexpected Status or Content-Type", {
+                    error: new GoogleGenAiDefaultError("API error occurred", {
+class CancelInteractionByIdServerError extends GoogleGenAiError {
+class CancelInteractionByIdClientError extends GoogleGenAiError {
+class CreateInteractionServerError extends GoogleGenAiError {
+class CreateInteractionClientError extends GoogleGenAiError {
+class DeleteInteractionServerError extends GoogleGenAiError {
+class DeleteInteractionClientError extends GoogleGenAiError {
+class GetInteractionByIdServerError extends GoogleGenAiError {
+class GetInteractionByIdClientError extends GoogleGenAiError {
+let GoogleGenAI$1 = class GoogleGenAI extends ClientSDK {
+function getGoogleGenAIServerURL(parentClient) {
+function getGoogleGenAIAPIVersion(parentClient) {
+function buildGoogleGenAIClient(parentClient, options = {}) {
+    const sdk = new GoogleGenAI$1(Object.assign(Object.assign({}, options), { api_version: (_a = options.api_version) !== null && _a !== void 0 ? _a : getGoogleGenAIAPIVersion(parentClient), security: (_b = options.security) !== null && _b !== void 0 ? _b : new GoogleGenAISecurityProvider({
+        }), server_url: (_e = options.server_url) !== null && _e !== void 0 ? _e : getGoogleGenAIServerURL(parentClient) }));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.create(Object.assign(Object.assign({}, request), { stream: true, api_version }), toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsCreate(this.getClient(api_version), request, api_version, toGoogleGenAIRequestOptions(options)));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.get(id, { stream, last_event_id, include_input, api_version }, toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsGet(this.getClient(api_version), id, stream, last_event_id, include_input, api_version, toGoogleGenAIRequestOptions(options)));
+        return wrapSDKCall(() => this.getClient(params === null || params === void 0 ? void 0 : params.api_version).interactions.delete(id, { api_version: params === null || params === void 0 ? void 0 : params.api_version }, toGoogleGenAIRequestOptions(options)));
+        return addOutputPropertiesIfInteraction(await unwrapWithSdkHttpResponse(interactionsCancel(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options))));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(agentsCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsList(this.getClient(api_version), api_version, pageSize, pageToken, parent, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(webhooksCreate(this.getClient(), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksList(this.getClient(), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksGet(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksUpdate(this.getClient(), id, api_version, update_mask, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksDelete(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksRotateSigningSecret(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksPing(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(triggersCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersList(this.getClient(api_version), api_version, filter, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersUpdate(this.getClient(api_version), id, body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersRun(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), trigger_id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersListExecutions(this.getClient(api_version), trigger_id, api_version, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+function toGoogleGenAIRequestOptions(options, streaming = false) {
+        console.warn(`GoogleGenAI.interactions: request option ${name} is not supported by the Google GenAI interactions bridge and will be ignored.`);
+        return unwrapWithSdkHttpResponse(environmentsCreateEnvironment(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsListEnvironments(this.getClient(api_version), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsGetEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsDeleteEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be
+ * set. When using Vertex AI, currently only {@link GoogleGenAIOptions.apiKey}
+ * is supported via Express mode. {@link GoogleGenAIOptions.project} and {@link
+ * GoogleGenAIOptions.location} should not be set.
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+class GoogleGenAI {
+            this._nextGenClient = buildGoogleGenAIClient(this.apiClient, {
+            console.warn('GoogleGenAI: Client level httpOptions.extraBody is not supported by the Gemini NextGen client and will be ignored.');
+        console.warn('GoogleGenAI.agents: Agents usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.triggers: Triggers usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.environments: Environments usage is experimental and may change in future versions.');
+export { ActivityHandling, AdapterSize, AggregationMetric, ApiError, ApiSpec, AspectRatio, AudioResponseFormat, AuthType, Batches, Behavior, BlockedReason, Caches, CancelTuningJobResponse, Chat, Chats, ComputeTokensResponse, ContentReferenceImage, ControlReferenceImage, ControlReferenceType, CountTokensResponse, CreateFileResponse, DeleteCachedContentResponse, DeleteFileResponse, DeleteModelResponse, Delivery, DocumentState, DynamicRetrievalConfigMode, EditImageResponse, EditMode, EmbedContentResponse, EmbeddingApiType, EndSensitivity, Environment, EvaluateDatasetResponse, FeatureSelectionPreference, FileSource, FileState, Files, FinishReason, FunctionCallingConfigMode, FunctionResponse, FunctionResponseBlob, FunctionResponseFileData, FunctionResponsePart, FunctionResponseScheduling, GenerateContentResponse, GenerateContentResponsePromptFeedback, GenerateContentResponseUsageMetadata, GenerateImagesResponse, GenerateVideosOperation, GenerateVideosResponse, GoogleGenAI, HarmBlockMethod, HarmBlockThreshold, HarmCategory, HarmProbability, HarmSeverity, HttpElementLocation, HttpResponse, ImagePromptLanguage, ImageResizeMode, ImageResponseFormat, ImageSize, ImportFileOperation, ImportFileResponse, InlinedEmbedContentResponse, InlinedResponse, JobState, Language, ListBatchJobsResponse, ListCachedContentsResponse, ListDocumentsResponse, ListFileSearchStoresResponse, ListFilesResponse, ListModelsResponse, ListTuningJobsResponse, Live, LiveClientToolResponse, LiveMusicPlaybackControl, LiveMusicServerMessage, LiveSendToolResponseParameters, LiveServerMessage, MaskReferenceImage, MaskReferenceMode, MatchOperation, MediaModality, MediaResolution, Modality, ModelStage, Models, MusicGenerationMode, Operations, Outcome, PagedItem, Pager, PairwiseChoice, PartMediaResolutionLevel, PersonGeneration, PhishBlockThreshold, ProminentPeople, RawReferenceImage, RecontextImageResponse, RegisterFilesResponse, ReinforcementTuningAutoraterScorerParsedResponseConversionScorer, ReinforcementTuningParseResponseConfig, ReinforcementTuningThinkingLevel, ReplayResponse, ResourceScope, ResponseFormat, ResponseParseType, SafetyFilterLevel, SafetyPolicy, Scale, SegmentImageResponse, SegmentMode, ServiceTier, Session, SingleEmbedContentResponse, StartSensitivity, StyleReferenceImage, SubjectReferenceImage, SubjectReferenceType, TextResponseFormat, ThinkingLevel, Tokens, ToolResponse, ToolType, TrafficType, TuningJobState, TuningMethod, TuningMode, TuningSpeed, TuningTask, TurnCompleteReason, TurnCoverage, Type, UploadToFileSearchStoreOperation, UploadToFileSearchStoreResponse, UploadToFileSearchStoreResumableResponse, UpscaleImageResponse, UrlRetrievalStatus, VadSignalType, ValidateRewardResponse, VideoCompressionQuality, VideoGenerationMaskMode, VideoGenerationReferenceType, VideoOrientation, VideoResponseFormat, VoiceActivityType, createFunctionResponsePartFromBase64, createFunctionResponsePartFromUri, createModelContent, createPartFromBase64, createPartFromCodeExecutionResult, createPartFromExecutableCode, createPartFromFunctionCall, createPartFromFunctionResponse, createPartFromText, createPartFromUri, createUserContent, mcpToTool, setDefaultBaseUrls };
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\web\web.d.ts
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params?: CreateAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.Agent>;
+    list(params?: ListAgentsParams_2 | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.AgentListResponse>;
+    get(id: string, params?: GetAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.Agent>;
+    delete(id: string, params?: DeleteAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    }, options?: GoogleGenAIRequestOptions): Promise<environments.Environment>;
+    list(params?: ListEnvironmentsParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<environments.ListEnvironmentsResponse>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<environments.Environment>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params: CreateModelInteractionParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: CreateAgentInteractionParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: CreateModelInteractionParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: CreateAgentInteractionParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: InteractionCreateParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: InteractionCreateParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: InteractionCreateParams, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction | Stream<GoogleGenAIInteractionSSEEvent>>;
+    get(id: string, params?: InteractionGetParamsNonStreaming | null, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    get(id: string, params: InteractionGetParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    get(id: string, params?: InteractionGetParams | null, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction | Stream<GoogleGenAIInteractionSSEEvent>>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<unknown>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params: CreateTriggerParams, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    list(params?: ListTriggersParams_2 | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.ListTriggersResponse>;
+    get(id: string, params?: GetTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    update(id: string, params: UpdateTriggerParams, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    delete(id: string, params?: DeleteTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    run(trigger_id: string, params?: RunTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.TriggerExecution>;
+    listExecutions(trigger_id: string, params?: ListTriggerExecutionsParams_2 | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.ListTriggerExecutionsResponse>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    }, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    list(params?: WebhookListParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookListResponse>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    update(id: string, params?: WebhookUpdateParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    rotateSigningSecret(id: string, params?: WebhookRotateSigningSecretParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookRotateSigningSecretResponse>;
+    ping(id: string, params?: WebhookPingParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookPingResponse>;
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be
+ * set. When using Vertex AI, currently only {@link GoogleGenAIOptions.apiKey}
+ * is supported via Express mode. {@link GoogleGenAIOptions.project} and {@link
+ * GoogleGenAIOptions.location} should not be set.
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+export declare class GoogleGenAI {
+    constructor(options: GoogleGenAIOptions);
+declare type GoogleGenAIInteraction = GoogleGenAIResponseWithSdkHttpResponse<Omit<interactions.Interaction, "steps"> & {
+declare type GoogleGenAIInteractionSSEEvent = interactions.InteractionSSEEvent;
+ * See {@link GoogleGenAI} for usage samples.
+export declare interface GoogleGenAIOptions {
+declare interface GoogleGenAIParentClient {
+declare type GoogleGenAIRequestOptions = RequestOptions & {
+declare type GoogleGenAIResponseWithSdkHttpResponse<T> = T & {
+    sdkHttpResponse?: GoogleGenAISdkHttpResponse;
+declare type GoogleGenAISdkHttpResponse = {
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+     * const ai = new GoogleGenAI({
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\genai.d.ts
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params?: CreateAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.Agent>;
+    list(params?: ListAgentsParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.AgentListResponse>;
+    get(id: string, params?: GetAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<agents.Agent>;
+    delete(id: string, params?: DeleteAgentParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    }, options?: GoogleGenAIRequestOptions): Promise<environments.Environment>;
+    list(params?: ListEnvironmentsParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<environments.ListEnvironmentsResponse>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<environments.Environment>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params: CreateModelInteractionParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: CreateAgentInteractionParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: CreateModelInteractionParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: CreateAgentInteractionParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: InteractionCreateParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    create(params: InteractionCreateParamsNonStreaming, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    create(params: InteractionCreateParams, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction | Stream<GoogleGenAIInteractionSSEEvent>>;
+    get(id: string, params?: InteractionGetParamsNonStreaming | null, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    get(id: string, params: InteractionGetParamsStreaming, options?: GoogleGenAIRequestOptions): Promise<Stream<GoogleGenAIInteractionSSEEvent>>;
+    get(id: string, params?: InteractionGetParams | null, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction | Stream<GoogleGenAIInteractionSSEEvent>>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<unknown>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<GoogleGenAIInteraction>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    create(params: CreateTriggerParams, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    list(params?: ListTriggersParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.ListTriggersResponse>;
+    get(id: string, params?: GetTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    update(id: string, params: UpdateTriggerParams, options?: GoogleGenAIRequestOptions): Promise<triggers.Trigger>;
+    delete(id: string, params?: DeleteTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    run(trigger_id: string, params?: RunTriggerParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.TriggerExecution>;
+    listExecutions(trigger_id: string, params?: ListTriggerExecutionsParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<triggers.ListTriggerExecutionsResponse>;
+    constructor(parentClient: GoogleGenAIParentClient);
+    }, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    list(params?: WebhookListParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookListResponse>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    update(id: string, params?: WebhookUpdateParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.Webhook>;
+    } | null | undefined, options?: GoogleGenAIRequestOptions): Promise<interactions.Empty>;
+    rotateSigningSecret(id: string, params?: WebhookRotateSigningSecretParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookRotateSigningSecretResponse>;
+    ping(id: string, params?: WebhookPingParams | null | undefined, options?: GoogleGenAIRequestOptions): Promise<webhooks.WebhookPingResponse>;
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API services to use.
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be set,
+ * when using Vertex AI {@link GoogleGenAIOptions.project} and {@link GoogleGenAIOptions.location} must also be set.
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+export declare class GoogleGenAI {
+    constructor(options: GoogleGenAIOptions);
+declare type GoogleGenAIInteraction = GoogleGenAIResponseWithSdkHttpResponse<Omit<interactions.Interaction, "steps"> & {
+declare type GoogleGenAIInteractionSSEEvent = interactions.InteractionSSEEvent;
+ * See {@link GoogleGenAI} for usage samples.
+export declare interface GoogleGenAIOptions {
+declare interface GoogleGenAIParentClient {
+declare type GoogleGenAIRequestOptions = RequestOptions & {
+declare type GoogleGenAIResponseWithSdkHttpResponse<T> = T & {
+    sdkHttpResponse?: GoogleGenAISdkHttpResponse;
+declare type GoogleGenAISdkHttpResponse = {
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+     * const ai = new GoogleGenAI({
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\index.cjs
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+class GoogleGenAISecurityProvider {
+    async resolveGoogleGenAISecurity(url) {
+class GoogleGenAIAuthHook {
+        return securitySource.resolveGoogleGenAISecurity(requestURL);
+        "resolveGoogleGenAISecurity" in value &&
+        typeof value.resolveGoogleGenAISecurity === "function");
+class GoogleGenAiError extends Error {
+        this.name = "GoogleGenAiError";
+    if (error instanceof GoogleGenAiError) {
+    const googleGenAIAuthHook = new GoogleGenAIAuthHook();
+    hooks.registerBeforeCreateRequestHook(googleGenAIAuthHook);
+    hooks.registerBeforeRequestHook(googleGenAIAuthHook);
+class GoogleGenAiDefaultError extends GoogleGenAiError {
+        this.name = "GoogleGenAiDefaultError";
+                    error: new GoogleGenAiDefaultError("Unexpected Status or Content-Type", {
+                    error: new GoogleGenAiDefaultError("API error occurred", {
+class CancelInteractionByIdServerError extends GoogleGenAiError {
+class CancelInteractionByIdClientError extends GoogleGenAiError {
+class CreateInteractionServerError extends GoogleGenAiError {
+class CreateInteractionClientError extends GoogleGenAiError {
+class DeleteInteractionServerError extends GoogleGenAiError {
+class DeleteInteractionClientError extends GoogleGenAiError {
+class GetInteractionByIdServerError extends GoogleGenAiError {
+class GetInteractionByIdClientError extends GoogleGenAiError {
+let GoogleGenAI$1 = class GoogleGenAI extends ClientSDK {
+function getGoogleGenAIServerURL(parentClient) {
+function getGoogleGenAIAPIVersion(parentClient) {
+function buildGoogleGenAIClient(parentClient, options = {}) {
+    const sdk = new GoogleGenAI$1(Object.assign(Object.assign({}, options), { api_version: (_a = options.api_version) !== null && _a !== void 0 ? _a : getGoogleGenAIAPIVersion(parentClient), security: (_b = options.security) !== null && _b !== void 0 ? _b : new GoogleGenAISecurityProvider({
+        }), server_url: (_e = options.server_url) !== null && _e !== void 0 ? _e : getGoogleGenAIServerURL(parentClient) }));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.create(Object.assign(Object.assign({}, request), { stream: true, api_version }), toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsCreate(this.getClient(api_version), request, api_version, toGoogleGenAIRequestOptions(options)));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.get(id, { stream, last_event_id, include_input, api_version }, toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsGet(this.getClient(api_version), id, stream, last_event_id, include_input, api_version, toGoogleGenAIRequestOptions(options)));
+        return wrapSDKCall(() => this.getClient(params === null || params === void 0 ? void 0 : params.api_version).interactions.delete(id, { api_version: params === null || params === void 0 ? void 0 : params.api_version }, toGoogleGenAIRequestOptions(options)));
+        return addOutputPropertiesIfInteraction(await unwrapWithSdkHttpResponse(interactionsCancel(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options))));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(agentsCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsList(this.getClient(api_version), api_version, pageSize, pageToken, parent, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(webhooksCreate(this.getClient(), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksList(this.getClient(), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksGet(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksUpdate(this.getClient(), id, api_version, update_mask, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksDelete(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksRotateSigningSecret(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksPing(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(triggersCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersList(this.getClient(api_version), api_version, filter, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersUpdate(this.getClient(api_version), id, body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersRun(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), trigger_id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersListExecutions(this.getClient(api_version), trigger_id, api_version, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+function toGoogleGenAIRequestOptions(options, streaming = false) {
+        console.warn(`GoogleGenAI.interactions: request option ${name} is not supported by the Google GenAI interactions bridge and will be ignored.`);
+        return unwrapWithSdkHttpResponse(environmentsCreateEnvironment(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsListEnvironments(this.getClient(api_version), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsGetEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsDeleteEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+                    console.warn("Warning: The SDK's ephemeral token support is in v1alpha only. Please use const ai = new GoogleGenAI({apiKey: token.name, httpOptions: { apiVersion: 'v1alpha' }}); before session connection.");
+     * const ai = new GoogleGenAI({
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API services to use.
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be set,
+ * when using Vertex AI {@link GoogleGenAIOptions.project} and {@link GoogleGenAIOptions.location} must also be set.
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+class GoogleGenAI {
+            this._nextGenClient = buildGoogleGenAIClient(this.apiClient, {
+            console.warn('GoogleGenAI: Client level httpOptions.extraBody is not supported by the Gemini NextGen client and will be ignored.');
+        console.warn('GoogleGenAI.agents: Agents usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.triggers: Triggers usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.environments: Environments usage is experimental and may change in future versions.');
+exports.GoogleGenAI = GoogleGenAI;
+--- D:\8040210230\bot V2\node_modules\@google\genai\dist\index.mjs
+ * import {GoogleGenAI, setDefaultBaseUrls} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+class GoogleGenAISecurityProvider {
+    async resolveGoogleGenAISecurity(url) {
+class GoogleGenAIAuthHook {
+        return securitySource.resolveGoogleGenAISecurity(requestURL);
+        "resolveGoogleGenAISecurity" in value &&
+        typeof value.resolveGoogleGenAISecurity === "function");
+class GoogleGenAiError extends Error {
+        this.name = "GoogleGenAiError";
+    if (error instanceof GoogleGenAiError) {
+    const googleGenAIAuthHook = new GoogleGenAIAuthHook();
+    hooks.registerBeforeCreateRequestHook(googleGenAIAuthHook);
+    hooks.registerBeforeRequestHook(googleGenAIAuthHook);
+class GoogleGenAiDefaultError extends GoogleGenAiError {
+        this.name = "GoogleGenAiDefaultError";
+                    error: new GoogleGenAiDefaultError("Unexpected Status or Content-Type", {
+                    error: new GoogleGenAiDefaultError("API error occurred", {
+class CancelInteractionByIdServerError extends GoogleGenAiError {
+class CancelInteractionByIdClientError extends GoogleGenAiError {
+class CreateInteractionServerError extends GoogleGenAiError {
+class CreateInteractionClientError extends GoogleGenAiError {
+class DeleteInteractionServerError extends GoogleGenAiError {
+class DeleteInteractionClientError extends GoogleGenAiError {
+class GetInteractionByIdServerError extends GoogleGenAiError {
+class GetInteractionByIdClientError extends GoogleGenAiError {
+let GoogleGenAI$1 = class GoogleGenAI extends ClientSDK {
+function getGoogleGenAIServerURL(parentClient) {
+function getGoogleGenAIAPIVersion(parentClient) {
+function buildGoogleGenAIClient(parentClient, options = {}) {
+    const sdk = new GoogleGenAI$1(Object.assign(Object.assign({}, options), { api_version: (_a = options.api_version) !== null && _a !== void 0 ? _a : getGoogleGenAIAPIVersion(parentClient), security: (_b = options.security) !== null && _b !== void 0 ? _b : new GoogleGenAISecurityProvider({
+        }), server_url: (_e = options.server_url) !== null && _e !== void 0 ? _e : getGoogleGenAIServerURL(parentClient) }));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.create(Object.assign(Object.assign({}, request), { stream: true, api_version }), toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsCreate(this.getClient(api_version), request, api_version, toGoogleGenAIRequestOptions(options)));
+            const response = await wrapSDKCall(() => this.getClient(api_version).interactions.get(id, { stream, last_event_id, include_input, api_version }, toGoogleGenAIRequestOptions(options, true)));
+        const response = await unwrapWithSdkHttpResponse(interactionsGet(this.getClient(api_version), id, stream, last_event_id, include_input, api_version, toGoogleGenAIRequestOptions(options)));
+        return wrapSDKCall(() => this.getClient(params === null || params === void 0 ? void 0 : params.api_version).interactions.delete(id, { api_version: params === null || params === void 0 ? void 0 : params.api_version }, toGoogleGenAIRequestOptions(options)));
+        return addOutputPropertiesIfInteraction(await unwrapWithSdkHttpResponse(interactionsCancel(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options))));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(agentsCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsList(this.getClient(api_version), api_version, pageSize, pageToken, parent, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(agentsDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(webhooksCreate(this.getClient(), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksList(this.getClient(), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksGet(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksUpdate(this.getClient(), id, api_version, update_mask, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksDelete(this.getClient(), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksRotateSigningSecret(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(webhooksPing(this.getClient(), id, api_version, body, toGoogleGenAIRequestOptions(options)));
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+        return unwrapWithSdkHttpResponse(triggersCreate(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersList(this.getClient(api_version), api_version, filter, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersGet(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersUpdate(this.getClient(api_version), id, body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersDelete(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersRun(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), trigger_id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(triggersListExecutions(this.getClient(api_version), trigger_id, api_version, pageSize, pageToken, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+function toGoogleGenAIRequestOptions(options, streaming = false) {
+        console.warn(`GoogleGenAI.interactions: request option ${name} is not supported by the Google GenAI interactions bridge and will be ignored.`);
+        return unwrapWithSdkHttpResponse(environmentsCreateEnvironment(this.getClient(api_version), body, api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsListEnvironments(this.getClient(api_version), api_version, page_size, page_token, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsGetEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+        return unwrapWithSdkHttpResponse(environmentsDeleteEnvironment(this.getClient(params === null || params === void 0 ? void 0 : params.api_version), id, params === null || params === void 0 ? void 0 : params.api_version, toGoogleGenAIRequestOptions(options)));
+            return buildGoogleGenAIClient(this.parentClient, {
+        (_a = this.sdk) !== null && _a !== void 0 ? _a : (this.sdk = buildGoogleGenAIClient(this.parentClient));
+                    console.warn("Warning: The SDK's ephemeral token support is in v1alpha only. Please use const ai = new GoogleGenAI({apiKey: token.name, httpOptions: { apiVersion: 'v1alpha' }}); before session connection.");
+     * const ai = new GoogleGenAI({
+ * The {@link GoogleGenAIOptions.vertexai} value determines which of the API services to use.
+ * When using the Gemini API, a {@link GoogleGenAIOptions.apiKey} must also be set,
+ * when using Vertex AI {@link GoogleGenAIOptions.project} and {@link GoogleGenAIOptions.location} must also be set.
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({apiKey: 'GEMINI_API_KEY'});
+ * import {GoogleGenAI} from '@google/genai';
+ * const ai = new GoogleGenAI({
+class GoogleGenAI {
+            this._nextGenClient = buildGoogleGenAIClient(this.apiClient, {
+            console.warn('GoogleGenAI: Client level httpOptions.extraBody is not supported by the Gemini NextGen client and will be ignored.');
+        console.warn('GoogleGenAI.agents: Agents usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.triggers: Triggers usage is experimental and may change in future versions.');
+        console.warn('GoogleGenAI.environments: Environments usage is experimental and may change in future versions.');
+export { ActivityHandling, AdapterSize, AggregationMetric, ApiError, ApiSpec, AspectRatio, AudioResponseFormat, AuthType, Batches, Behavior, BlockedReason, Caches, CancelTuningJobResponse, Chat, Chats, ComputeTokensResponse, ContentReferenceImage, ControlReferenceImage, ControlReferenceType, CountTokensResponse, CreateFileResponse, DeleteCachedContentResponse, DeleteFileResponse, DeleteModelResponse, Delivery, DocumentState, DynamicRetrievalConfigMode, EditImageResponse, EditMode, EmbedContentResponse, EmbeddingApiType, EndSensitivity, Environment, EvaluateDatasetResponse, FeatureSelectionPreference, FileSource, FileState, Files, FinishReason, FunctionCallingConfigMode, FunctionResponse, FunctionResponseBlob, FunctionResponseFileData, FunctionResponsePart, FunctionResponseScheduling, GenerateContentResponse, GenerateContentResponsePromptFeedback, GenerateContentResponseUsageMetadata, GenerateImagesResponse, GenerateVideosOperation, GenerateVideosResponse, GoogleGenAI, HarmBlockMethod, HarmBlockThreshold, HarmCategory, HarmProbability, HarmSeverity, HttpElementLocation, HttpResponse, ImagePromptLanguage, ImageResizeMode, ImageResponseFormat, ImageSize, ImportFileOperation, ImportFileResponse, InlinedEmbedContentResponse, InlinedResponse, JobState, Language, ListBatchJobsResponse, ListCachedContentsResponse, ListDocumentsResponse, ListFileSearchStoresResponse, ListFilesResponse, ListModelsResponse, ListTuningJobsResponse, Live, LiveClientToolResponse, LiveMusicPlaybackControl, LiveMusicServerMessage, LiveSendToolResponseParameters, LiveServerMessage, MaskReferenceImage, MaskReferenceMode, MatchOperation, MediaModality, MediaResolution, Modality, ModelStage, Models, MusicGenerationMode, Operations, Outcome, PagedItem, Pager, PairwiseChoice, PartMediaResolutionLevel, PersonGeneration, PhishBlockThreshold, ProminentPeople, RawReferenceImage, RecontextImageResponse, RegisterFilesResponse, ReinforcementTuningAutoraterScorerParsedResponseConversionScorer, ReinforcementTuningParseResponseConfig, ReinforcementTuningThinkingLevel, ReplayResponse, ResourceScope, ResponseFormat, ResponseParseType, SafetyFilterLevel, SafetyPolicy, Scale, SegmentImageResponse, SegmentMode, ServiceTier, Session, SingleEmbedContentResponse, StartSensitivity, StyleReferenceImage, SubjectReferenceImage, SubjectReferenceType, TextResponseFormat, ThinkingLevel, Tokens, ToolResponse, ToolType, TrafficType, TuningJobState, TuningMethod, TuningMode, TuningSpeed, TuningTask, TurnCompleteReason, TurnCoverage, Type, UploadToFileSearchStoreOperation, UploadToFileSearchStoreResponse, UploadToFileSearchStoreResumableResponse, UpscaleImageResponse, UrlRetrievalStatus, VadSignalType, ValidateRewardResponse, VideoCompressionQuality, VideoGenerationMaskMode, VideoGenerationReferenceType, VideoOrientation, VideoResponseFormat, VoiceActivityType, createFunctionResponsePartFromBase64, createFunctionResponsePartFromUri, createModelContent, createPartFromBase64, createPartFromCodeExecutionResult, createPartFromExecutableCode, createPartFromFunctionCall, createPartFromFunctionResponse, createPartFromText, createPartFromUri, createUserContent, mcpToTool, setDefaultBaseUrls };

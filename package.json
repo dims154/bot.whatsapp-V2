@@ -14,9 +14,11 @@
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
+    "@google/genai": "^2.15.0",
     "@prisma/client": "^5.11.0",
     "axios": "^1.19.0",
     "bcrypt": "^5.1.1",
+    "better-sqlite3": "^13.0.3",
     "cors": "^2.8.5",
     "dayjs": "^1.11.0",
     "dotenv": "^16.6.1",
@@ -35,6 +37,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+    "@types/better-sqlite3": "^9.6.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.19",
     "@types/helmet": "^4.0.0",

@@ -7,31 +7,34 @@ export class CommandExecutor {
         private registry: CommandRegistry
     ) {}
 
-    async execute(context: CommandContext) {
+    async execute(
+        context: CommandContext
+    ): Promise<void> {
 
-        const body = context.text.trim();
+        const text = context.text.trim();
 
-        const parts = body.split(/\s+/);
-
-        const commandName = (parts.shift() ?? "")
-            .replace(/^\//, "")
-            .toLowerCase();
-
-        console.log("📥 Input :", body);
-        console.log("🔎 Command :", commandName);
-
-        const command = this.registry.get(commandName);
-
-        console.log("📦 Registry :", command);
-
-        if (!command) {
-            console.log(`❌ Command "${commandName}" tidak ditemukan.`);
+        if (!text.startsWith("/")) {
             return;
         }
 
-        context.args = parts;
+        const commandName = text
+            .split(/\s+/)[0]
+            .substring(1)
+            .toLowerCase();
 
-        console.log(`✅ Menjalankan command "${command.name}"`);
+        const command = this.registry.get(
+            commandName
+        );
+
+        if (!command) {
+
+            await context.reply(
+                `❌ Command "${commandName}" tidak ditemukan.`
+            );
+
+            return;
+
+        }
 
         await command.execute(context);
 

@@ -27,7 +27,7 @@ export class MetaParser {
 
             isOwner: false,
 
-            reply: async () => {}
+
 
         });
 
