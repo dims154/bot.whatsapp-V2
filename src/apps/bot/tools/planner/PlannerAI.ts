@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Schema } from "@google/genai";
 
 import { aiConfig } from "../../../../config/ai.config";
 
@@ -10,21 +10,33 @@ export class PlannerAI {
 
     });
 
-    async ask(
-        prompt: string
-    ): Promise<string> {
+    async ask<T>(
+        prompt: string,
+        schema: Schema
+    ): Promise<T> {
 
         const response =
             await this.client.models.generateContent({
 
                 model: aiConfig.plannerModel,
 
-                contents: prompt
+                contents: prompt,
+
+                config: {
+
+                    responseMimeType: "application/json",
+
+                    responseSchema: schema
+
+                }
 
             });
 
-        return response.text ?? "";
+        if (!response.text) {
+            throw new Error("PlannerAI: Empty response from Gemini.");
+        }
 
+        return JSON.parse(response.text) as T;
     }
 
 }
