@@ -1,0 +1,5 @@
+BOT V2 adalah Enterprise AI Platform.
+
+Knowledge Engine bertugas menyimpan seluruh dokumen perusahaan.
+
+Semua informasi akan diubah menjadi chunk.
