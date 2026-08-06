@@ -2,9 +2,6 @@ export class ToolValidator {
 
     validate(plan: any): any {
         return plan;
-
     }
 
 }
-
-export const toolValidator = new ToolValidator();

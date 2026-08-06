@@ -2,8 +2,8 @@ import { AIStage } from "../AIStage";
 import { AIPipelineContext } from "../AIPipelineContext";
 
 import { toolPlanner } from "../../../tools/planner/planner.container";
-import { toolValidator } from "../../../tools/validator/validator.container";
 import { toolExecutor } from "../../../tools/executor/executor.container";
+import { toolValidator } from "../../../tools/validator/validator.container";
 
 export class ToolStage implements AIStage<AIPipelineContext> {
 
