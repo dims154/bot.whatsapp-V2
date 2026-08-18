@@ -58,25 +58,28 @@ model Business {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  tenant        Tenant         @relation(fields: [tenantId], references: [id])
-  tenantId      String
-  email         String         @unique
-  password      String
-  firstName     String?
-  lastName      String?
-  avatarUrl     String?
-  active        Boolean        @default(true)
-  roles         Role[]         @relation("UserRoles")
-  permissions   Permission[]   @relation("UserPermissions")
-  sessions      Session[]
-  activityLogs  ActivityLog[]
-  refreshTokens RefreshToken[]
-  admin         Admin?         @relation("UserAdmin")
-  employee      Employee?
-  auditLogs     AuditLog[]     @relation("UserAuditLogs")
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id              String         @id @default(uuid())
+  tenant          Tenant         @relation(fields: [tenantId], references: [id])
+  tenantId        String
+  email           String         @unique
+  password        String
+  firstName       String?
+  lastName        String?
+  whatsappNumber  String?
+  avatarUrl       String?
+  active          Boolean        @default(true)
+  roles           Role[]         @relation("UserRoles")
+  permissions     Permission[]   @relation("UserPermissions")
+  sessions        Session[]
+  activityLogs    ActivityLog[]
+  refreshTokens   RefreshToken[]
+  admin           Admin?         @relation("UserAdmin")
+  employee        Employee?
+  auditLogs       AuditLog[]     @relation("UserAuditLogs")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@unique([tenantId, whatsappNumber])
 }
 
 model RefreshToken {
