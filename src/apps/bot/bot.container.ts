@@ -2,6 +2,7 @@ import { CommandRegistry } from "./registry/CommandRegistry";
 import { CommandLoader } from "./loader/CommandLoader";
 import { CommandExecutor } from "./executor/CommandExecutor";
 import { BotDispatcher } from "./dispatcher/BotDispatcher";
+import { WhatsAppProviderFactory } from "./providers/WhatsAppProviderFactory";
 
 const registry = new CommandRegistry();
 
@@ -15,9 +16,14 @@ const executor = new CommandExecutor(registry);
 // Dispatcher
 const dispatcher = new BotDispatcher(executor);
 
+// WhatsApp Provider
+const whatsappProvider =
+    WhatsAppProviderFactory.create();
+
 export {
     registry,
     loader,
     executor,
-    dispatcher
+    dispatcher,
+      whatsappProvider
 };

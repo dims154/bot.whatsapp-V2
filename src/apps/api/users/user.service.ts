@@ -1,84 +1,233 @@
 import bcrypt from 'bcrypt';
 import { userRepository } from './user.repository';
-import { CreateUserPayload, UpdateUserPayload } from './user.interfaces';
+import {
+    CreateUserPayload,
+    UpdateUserPayload
+} from './user.interfaces';
 
 export const userService = {
-  getAll: async (tenantId: string) => {
-    return userRepository.findAll(tenantId);
-  },
-  getById: async (id: string, tenantId: string) => {
-    return userRepository.findById(id, tenantId);
-  },
-  create: async (payload: CreateUserPayload, tenantId: string) => {
-    const hashedPassword = await bcrypt.hash(payload.password, 12);
-    const createData = {
-      ...payload,
-      password: hashedPassword,
-      tenantId,
-    };
 
-    return userRepository.create(createData);
-  },
-  update: async (id: string, payload: UpdateUserPayload, tenantId: string) => {
-    const existingUser = await userRepository.findById(id, tenantId);
-    if (!existingUser) {
-      return null;
-    }
+    // =========================
+    // GET ALL USERS
+    // =========================
 
-    const updatePayload: {
-      email?: string;
-      password?: string;
-      firstName?: string;
-      lastName?: string;
-      active?: boolean;
-      roles?: { set: { id: string }[] };
-      permissions?: { set: { id: string }[] };
-    } = {
-      email: payload.email,
-      password: payload.password,
-      firstName: payload.firstName,
-      lastName: payload.lastName,
-      active: payload.active,
-    };
+    getAll: async (tenantId: string) => {
+        return userRepository.findAll(tenantId);
+    },
 
-    if (payload.password) {
-      updatePayload.password = await bcrypt.hash(payload.password, 12);
-    }
+    // =========================
+    // GET USER BY ID
+    // =========================
 
-    if (payload.roleIds) {
-      updatePayload.roles = { set: payload.roleIds.map((roleId) => ({ id: roleId })) };
-    }
-    if (payload.permissionIds) {
-      updatePayload.permissions = { set: payload.permissionIds.map((permissionId) => ({ id: permissionId })) };
-    }
+    getById: async (
+        id: string,
+        tenantId: string
+    ) => {
+        return userRepository.findById(
+            id,
+            tenantId
+        );
+    },
 
-    return userRepository.update(id, updatePayload);
-  },
-  remove: async (id: string, tenantId: string) => {
-    const existingUser = await userRepository.findById(id, tenantId);
-    if (!existingUser) {
-      return null;
-    }
+    // =========================
+    // GET USER BY WHATSAPP
+    // =========================
 
-    return userRepository.delete(id);
-  },
-  assignRoles: async (id: string, roleIds: string[], tenantId: string) => {
-    const existingUser = await userRepository.findById(id, tenantId);
-    if (!existingUser) {
-      return null;
-    }
+    getByWhatsApp: async (
+        whatsappNumber: string,
+        tenantId: string
+    ) => {
+        return userRepository.findByWhatsApp(
+            whatsappNumber,
+            tenantId
+        );
+    },
 
-    return userRepository.assignRoles(id, roleIds);
-  },
-  assignPermissions: async (id: string, permissionIds: string[], tenantId: string) => {
-    const existingUser = await userRepository.findById(id, tenantId);
-    if (!existingUser) {
-      return null;
-    }
+    // =========================
+    // CREATE USER
+    // =========================
 
-    return userRepository.assignPermissions(id, permissionIds);
-  },
-  getPermissions: async (userId: string) => {
-    return userRepository.findPermissions(userId);
-  },
+    create: async (
+        payload: CreateUserPayload,
+        tenantId: string
+    ) => {
+
+        const hashedPassword =
+            await bcrypt.hash(
+                payload.password,
+                12
+            );
+
+        const createData = {
+            ...payload,
+            password: hashedPassword,
+            tenantId,
+        };
+
+        return userRepository.create(
+            createData
+        );
+    },
+
+    // =========================
+    // UPDATE USER
+    // =========================
+
+    update: async (
+        id: string,
+        payload: UpdateUserPayload,
+        tenantId: string
+    ) => {
+
+        const existingUser =
+            await userRepository.findById(
+                id,
+                tenantId
+            );
+
+        if (!existingUser) {
+            return null;
+        }
+
+        const updatePayload: {
+            email?: string;
+            password?: string;
+            firstName?: string;
+            lastName?: string;
+            whatsappNumber?: string;
+            active?: boolean;
+            roles?: {
+                set: { id: string }[];
+            };
+            permissions?: {
+                set: { id: string }[];
+            };
+        } = {
+            email: payload.email,
+            password: payload.password,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            whatsappNumber: payload.whatsappNumber,
+            active: payload.active,
+        };
+
+        if (payload.password) {
+            updatePayload.password =
+                await bcrypt.hash(
+                    payload.password,
+                    12
+                );
+        }
+
+        if (payload.roleIds) {
+            updatePayload.roles = {
+                set: payload.roleIds.map(
+                    (roleId) => ({
+                        id: roleId
+                    })
+                )
+            };
+        }
+
+        if (payload.permissionIds) {
+            updatePayload.permissions = {
+                set: payload.permissionIds.map(
+                    (permissionId) => ({
+                        id: permissionId
+                    })
+                )
+            };
+        }
+
+        return userRepository.update(
+            id,
+            updatePayload
+        );
+    },
+
+    // =========================
+    // DELETE USER
+    // =========================
+
+    remove: async (
+        id: string,
+        tenantId: string
+    ) => {
+
+        const existingUser =
+            await userRepository.findById(
+                id,
+                tenantId
+            );
+
+        if (!existingUser) {
+            return null;
+        }
+
+        return userRepository.delete(id);
+    },
+
+    // =========================
+    // ASSIGN ROLES
+    // =========================
+
+    assignRoles: async (
+        id: string,
+        roleIds: string[],
+        tenantId: string
+    ) => {
+
+        const existingUser =
+            await userRepository.findById(
+                id,
+                tenantId
+            );
+
+        if (!existingUser) {
+            return null;
+        }
+
+        return userRepository.assignRoles(
+            id,
+            roleIds
+        );
+    },
+
+    // =========================
+    // ASSIGN PERMISSIONS
+    // =========================
+
+    assignPermissions: async (
+        id: string,
+        permissionIds: string[],
+        tenantId: string
+    ) => {
+
+        const existingUser =
+            await userRepository.findById(
+                id,
+                tenantId
+            );
+
+        if (!existingUser) {
+            return null;
+        }
+
+        return userRepository.assignPermissions(
+            id,
+            permissionIds
+        );
+    },
+
+    // =========================
+    // GET PERMISSIONS
+    // =========================
+
+    getPermissions: async (
+        userId: string
+    ) => {
+        return userRepository.findPermissions(
+            userId
+        );
+    },
 };

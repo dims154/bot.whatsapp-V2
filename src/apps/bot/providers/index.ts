@@ -1,4 +1,4 @@
-import { MockMessageProvider } from "./MockMessageProvider";
+import { WhatsAppProviderFactory } from "./WhatsAppProviderFactory";
 
 export const messageProvider =
-    new MockMessageProvider();
+    WhatsAppProviderFactory.create();
