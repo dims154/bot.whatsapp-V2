@@ -1,5 +1,6 @@
 import { ICommandContext } from "../commands/interfaces/ICommandContext";
 import { CommandRegistry } from "../registry/CommandRegistry";
+import { PermissionResolver } from "../auth/PermissionResolver";
 
 export class CommandExecutor {
 
@@ -15,40 +16,80 @@ export class CommandExecutor {
         // DEBUG: EXECUTOR DIPANGGIL
         // =========================
 
-        console.log("🚀 CommandExecutor dipanggil:", {
-            text: context.text,
-            sender: context.sender,
-            isAdmin: context.isAdmin,
-            isOwner: context.isOwner
-        });
+        console.log(
+            "🚀 CommandExecutor dipanggil:",
+            {
+                text:
+                    context.text,
+
+                sender:
+                    context.sender,
+
+                userId:
+                    context.userId,
+
+                tenantId:
+                    context.tenantId,
+
+                roles:
+                    context.roles,
+
+                permissions:
+                    context.permissions,
+
+                isAdmin:
+                    context.isAdmin,
+
+                isOwner:
+                    context.isOwner
+            }
+        );
+
 
         // =========================
         // VALIDASI TEXT
         // =========================
 
-        const text = context.text.trim();
+        const text =
+            context.text.trim();
 
-        if (!text.startsWith("/")) {
-            console.log("⚠️ Bukan command:", text);
+        if (
+            !text.startsWith("/")
+        ) {
+
+            console.log(
+                "⚠️ Bukan command:",
+                text
+            );
+
             return;
         }
+
 
         // =========================
         // AMBIL COMMAND NAME
         // =========================
 
-        const commandName = text
-            .split(/\s+/)[0]
-            .substring(1)
-            .toLowerCase();
+        const commandName =
+            text
+                .split(/\s+/)[0]
+                .substring(1)
+                .toLowerCase();
 
-        console.log("🔎 Command name:", commandName);
+        console.log(
+            "🔎 Command name:",
+            commandName
+        );
+
 
         // =========================
         // CARI COMMAND
         // =========================
 
-        const command = this.registry.get(commandName);
+        const command =
+            this.registry.get(
+                commandName
+            );
 
         if (!command) {
 
@@ -63,77 +104,168 @@ export class CommandExecutor {
             return;
         }
 
+
         // =========================
         // DEBUG COMMAND
         // =========================
 
-        console.log("🔎 COMMAND DEBUG:", {
-            command: command.name,
-            permission: command.permission,
-            category: command.category,
-            sender: context.sender,
-            isAdmin: context.isAdmin,
-            isOwner: context.isOwner
-        });
+        console.log(
+            "🔎 COMMAND DEBUG:",
+            {
+                command:
+                    command.name,
+
+                permission:
+                    command.permission,
+
+                category:
+                    command.category,
+
+                sender:
+                    context.sender,
+
+                userId:
+                    context.userId,
+
+                tenantId:
+                    context.tenantId,
+
+                roles:
+                    context.roles,
+
+                permissions:
+                    context.permissions
+            }
+        );
+
 
         // =========================
-        // PERMISSION: ADMIN
+        // DATABASE PERMISSION CHECK
         // =========================
 
-        if (
-            command.permission === "admin" &&
-            !context.isAdmin &&
-            !context.isOwner
-        ) {
-
-            console.log("❌ Admin permission denied:", {
-                command: command.name,
-                sender: context.sender,
-                isAdmin: context.isAdmin,
-                isOwner: context.isOwner
-            });
-
-            await context.reply(
-                "❌ Kamu tidak memiliki akses admin."
+        const hasPermission =
+            PermissionResolver.has(
+                context.permissions,
+                command.permission,
+                context.roles
             );
+
+
+        console.log(
+            "🔐 DATABASE PERMISSION CHECK:",
+            {
+                command:
+                    command.name,
+
+                requiredPermission:
+                    command.permission,
+
+                userId:
+                    context.userId,
+
+                tenantId:
+                    context.tenantId,
+
+                roles:
+                    context.roles,
+
+                permissions:
+                    context.permissions,
+
+                result:
+                    hasPermission
+            }
+        );
+
+
+        // =========================
+        // PERMISSION DENIED
+        // =========================
+
+        if (!hasPermission) {
+
+            console.log(
+                "❌ Permission denied:",
+                {
+                    command:
+                        command.name,
+
+                    requiredPermission:
+                        command.permission,
+
+                    sender:
+                        context.sender,
+
+                    roles:
+                        context.roles,
+
+                    permissions:
+                        context.permissions
+                }
+            );
+
+            // =========================
+            // MESSAGE SESUAI LEVEL
+            // =========================
+
+            if (
+                command.permission === "owner"
+            ) {
+
+                await context.reply(
+                    "❌ Kamu tidak memiliki akses owner."
+                );
+
+            } else if (
+                command.permission === "admin"
+            ) {
+
+                await context.reply(
+                    "❌ Kamu tidak memiliki akses admin."
+                );
+
+            } else {
+
+                await context.reply(
+                    "❌ Kamu tidak memiliki permission untuk menjalankan command ini."
+                );
+
+            }
 
             return;
         }
 
-        // =========================
-        // PERMISSION: OWNER
-        // =========================
-
-        if (
-            command.permission === "owner" &&
-            !context.isOwner
-        ) {
-
-            console.log("❌ Owner permission denied:", {
-                command: command.name,
-                sender: context.sender,
-                isAdmin: context.isAdmin,
-                isOwner: context.isOwner
-            });
-
-            await context.reply(
-                "❌ Kamu tidak memiliki akses owner."
-            );
-
-            return;
-        }
 
         // =========================
         // PERMISSION PASSED
         // =========================
 
-        console.log("🔐 Permission Check PASSED:", {
-            command: command.name,
-            permission: command.permission,
-            sender: context.sender,
-            isAdmin: context.isAdmin,
-            isOwner: context.isOwner
-        });
+        console.log(
+            "🔐 Permission Check PASSED:",
+            {
+                command:
+                    command.name,
+
+                permission:
+                    command.permission,
+
+                sender:
+                    context.sender,
+
+                userId:
+                    context.userId,
+
+                tenantId:
+                    context.tenantId,
+
+                roles:
+                    context.roles,
+
+                permissions:
+                    context.permissions
+            }
+        );
+
 
         // =========================
         // EXECUTE COMMAND
@@ -141,7 +273,9 @@ export class CommandExecutor {
 
         try {
 
-            await command.execute(context);
+            await command.execute(
+                context
+            );
 
             console.log(
                 `✅ Command executed: /${command.name}`
@@ -166,7 +300,11 @@ export class CommandExecutor {
                     "❌ Gagal mengirim error response:",
                     replyError
                 );
+
             }
+
         }
+
     }
+
 }

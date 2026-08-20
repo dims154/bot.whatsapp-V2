@@ -6,6 +6,9 @@ import { HelpCommand } from "../commands/help.command";
 import { MenuCommand } from "../commands/menu.command";
 import { AdminCommand } from "../commands/admin.command";
 import { OwnerCommand } from "../commands/owner.command";
+import { UserListCommand } from "../commands/user-list.command";
+import { UserDetailCommand } from "../commands/user-detail.command";
+import { CreateUserCommand } from "../commands/create-user.command";
 
 export class CommandLoader {
 
@@ -39,6 +42,21 @@ export class CommandLoader {
             new AdminCommand()
         );
 
+ // =========================
+// USERS
+// =========================
+
+this.registry.register(
+    new UserListCommand()
+);
+
+this.registry.register(
+    new UserDetailCommand()
+);
+
+this.registry.register(
+    new CreateUserCommand()
+);
         // =========================
         // OWNER
         // =========================

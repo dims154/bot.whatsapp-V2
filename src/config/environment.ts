@@ -8,6 +8,10 @@ process.env.DATABASE_URL ??= defaultDatabaseUrl;
 
 export const config = {
 
+    bot: {
+    tenantId: process.env.BOT_TENANT_ID ?? "",
+},
+
     server: {
         port: Number(process.env.PORT ?? 3000),
     },

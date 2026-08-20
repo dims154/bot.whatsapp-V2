@@ -41,7 +41,7 @@ export class MetaController {
 
         try {
 
-            const context = MetaParser.parse(req.body);
+           const context = await MetaParser.parse(req.body);
 
             if (!context) {
                 console.log("⚠️ Tidak ada pesan masuk.");

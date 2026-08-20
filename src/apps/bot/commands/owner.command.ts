@@ -2,18 +2,23 @@ import { ICommand } from "./interfaces/ICommand";
 import { ICommandContext } from "./interfaces/ICommandContext";
 
 export class OwnerCommand implements ICommand {
+
     name = "owner";
+
     aliases = ["own"];
+
     category = "owner";
+
     permission = "owner";
+
     cooldown = 3;
+
     description = "Menu owner";
 
-    async execute(context: ICommandContext): Promise<void> {
-        if (!context.isOwner) {
-            await context.reply("❌ Command ini hanya untuk owner.");
-            return;
-        }
+
+    async execute(
+        context: ICommandContext
+    ): Promise<void> {
 
         await context.reply(
             `👑 MENU OWNER
@@ -22,5 +27,7 @@ export class OwnerCommand implements ICommand {
 /admin - Menu administrator
 /status - Status sistem`
         );
+
     }
+
 }

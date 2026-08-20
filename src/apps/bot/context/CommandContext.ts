@@ -4,6 +4,10 @@ import { CommandContextData } from "./CommandContextData";
 
 export class CommandContext implements ICommandContext {
 
+    // =========================
+    // MESSAGE
+    // =========================
+
     sender: string;
 
     chatId: string;
@@ -16,24 +20,103 @@ export class CommandContext implements ICommandContext {
 
     isGroup: boolean;
 
+
+    // =========================
+    // ROLE FLAGS
+    // =========================
+
     isAdmin: boolean;
 
     isOwner: boolean;
 
-    constructor(data: CommandContextData) {
 
-        this.sender = data.sender;
-        this.chatId = data.chatId;
-        this.messageId = data.messageId;
-        this.text = data.text;
-        this.args = data.args;
-        this.isGroup = data.isGroup;
-        this.isAdmin = data.isAdmin;
-        this.isOwner = data.isOwner;
+    // =========================
+    // DATABASE IDENTITY
+    // =========================
+
+    userId?: string;
+
+    tenantId?: string;
+
+
+    // =========================
+    // AUTHORIZATION
+    // =========================
+
+    roles: string[];
+
+    permissions: string[];
+
+
+    // =========================
+    // CONSTRUCTOR
+    // =========================
+
+    constructor(
+        data: CommandContextData
+    ) {
+
+        this.sender =
+            data.sender;
+
+        this.chatId =
+            data.chatId;
+
+        this.messageId =
+            data.messageId;
+
+        this.text =
+            data.text;
+
+        this.args =
+            data.args;
+
+        this.isGroup =
+            data.isGroup;
+
+
+        // =========================
+        // ROLE FLAGS
+        // =========================
+
+        this.isAdmin =
+            data.isAdmin;
+
+        this.isOwner =
+            data.isOwner;
+
+
+        // =========================
+        // DATABASE IDENTITY
+        // =========================
+
+        this.userId =
+            data.userId;
+
+        this.tenantId =
+            data.tenantId;
+
+
+        // =========================
+        // AUTHORIZATION
+        // =========================
+
+        this.roles =
+            data.roles ?? [];
+
+        this.permissions =
+            data.permissions ?? [];
 
     }
 
-    async reply(message: string): Promise<void> {
+
+    // =========================
+    // REPLY
+    // =========================
+
+    async reply(
+        message: string
+    ): Promise<void> {
 
         await messageProvider.sendMessage(
             this.chatId,
