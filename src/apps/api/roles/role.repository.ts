@@ -19,6 +19,29 @@ export const roleRepository = {
       include: { permissions: true },
     });
   },
+  // =========================
+// FIND BY NAME
+// =========================
+
+findByName: async (
+    name: string,
+    tenantId: string
+) => {
+
+    return prismaService.client.role.findFirst({
+
+        where: {
+            name,
+            tenantId
+        },
+
+        include: {
+            permissions: true
+        },
+
+    });
+
+},
   create: async (data: {
     tenantId: string;
     name: string;

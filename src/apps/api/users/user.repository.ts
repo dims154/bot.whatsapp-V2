@@ -105,11 +105,16 @@ export const userRepository = {
             where:
                 tenantId
                     ? {
+
                         id,
+
                         tenantId
+
                     }
                     : {
+
                         id
+
                     },
 
             include: {
@@ -220,11 +225,11 @@ export const userRepository = {
     // FIND USER BY WHATSAPP
     // ALL STATUS
     // =================================================
-    //
+
     // Digunakan untuk validasi duplicate ketika CREATE.
     //
     // User inactive tetap dianggap sudah memiliki nomor.
-    //
+
     // =================================================
 
     findByWhatsAppAnyStatus: async (
@@ -311,10 +316,13 @@ export const userRepository = {
                         ? {
 
                             connect:
+
                                 data.roleIds.map(
 
                                     (id) => ({
+
                                         id
+
                                     })
 
                                 )
@@ -336,10 +344,13 @@ export const userRepository = {
                         ? {
 
                             connect:
+
                                 data.permissionIds.map(
 
                                     (id) => ({
+
                                         id
+
                                     })
 
                                 )
@@ -349,7 +360,6 @@ export const userRepository = {
                         : undefined
 
             },
-
 
             include: {
 
@@ -519,6 +529,7 @@ export const userRepository = {
 
     // =================================================
     // ASSIGN ROLES
+    // TENANT SAFE
     // =================================================
 
     assignRoles: async (
@@ -532,10 +543,14 @@ export const userRepository = {
     ) => {
 
         // =============================================
-        // VALIDASI USER TENANT
+        // VALIDASI TENANT
         // =============================================
 
         if (tenantId) {
+
+            // =========================================
+            // CEK USER
+            // =========================================
 
             const user =
                 await prismaService.client.user.findFirst({
@@ -557,8 +572,50 @@ export const userRepository = {
 
             }
 
+
+            // =========================================
+            // CEK ROLE
+            // =========================================
+
+            const roles =
+                await prismaService.client.role.findMany({
+
+                    where: {
+
+                        id: {
+
+                            in: roleIds
+
+                        },
+
+                        tenantId
+
+                    }
+
+                });
+
+
+            // =========================================
+            // SEMUA ROLE HARUS ADA
+            // DI TENANT YANG SAMA
+            // =========================================
+
+            if (
+                roles.length !== roleIds.length
+            ) {
+
+                throw new Error(
+                    "ROLE_NOT_FOUND_OR_WRONG_TENANT"
+                );
+
+            }
+
         }
 
+
+        // =============================================
+        // ASSIGN ROLE
+        // =============================================
 
         return prismaService.client.user.update({
 
@@ -591,6 +648,8 @@ export const userRepository = {
 
             include: {
 
+                permissions: true,
+
                 roles: {
 
                     include: {
@@ -610,6 +669,7 @@ export const userRepository = {
 
     // =================================================
     // ASSIGN PERMISSIONS
+    // TENANT SAFE
     // =================================================
 
     assignPermissions: async (
@@ -623,10 +683,14 @@ export const userRepository = {
     ) => {
 
         // =============================================
-        // VALIDASI USER TENANT
+        // VALIDASI TENANT
         // =============================================
 
         if (tenantId) {
+
+            // =========================================
+            // CEK USER
+            // =========================================
 
             const user =
                 await prismaService.client.user.findFirst({
@@ -648,8 +712,51 @@ export const userRepository = {
 
             }
 
+
+            // =========================================
+            // CEK PERMISSION
+            // =========================================
+
+            const permissions =
+                await prismaService.client.permission.findMany({
+
+                    where: {
+
+                        id: {
+
+                            in: permissionIds
+
+                        },
+
+                        tenantId
+
+                    }
+
+                });
+
+
+            // =========================================
+            // SEMUA PERMISSION HARUS ADA
+            // DI TENANT YANG SAMA
+            // =========================================
+
+            if (
+                permissions.length !==
+                permissionIds.length
+            ) {
+
+                throw new Error(
+                    "PERMISSION_NOT_FOUND_OR_WRONG_TENANT"
+                );
+
+            }
+
         }
 
+
+        // =============================================
+        // ASSIGN PERMISSION
+        // =============================================
 
         return prismaService.client.user.update({
 
@@ -682,7 +789,17 @@ export const userRepository = {
 
             include: {
 
-                permissions: true
+                permissions: true,
+
+                roles: {
+
+                    include: {
+
+                        permissions: true
+
+                    }
+
+                }
 
             }
 
@@ -724,7 +841,6 @@ export const userRepository = {
                             userId
 
                     },
-
 
             include: {
 
