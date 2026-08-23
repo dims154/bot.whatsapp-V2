@@ -1,6 +1,7 @@
 import { ICommandContext } from "../commands/interfaces/ICommandContext";
 import { CommandRegistry } from "../registry/CommandRegistry";
 import { PermissionResolver } from "../auth/PermissionResolver";
+import { userRepository } from "../../api/users/user.repository";
 
 export class CommandExecutor {
 
@@ -138,7 +139,75 @@ export class CommandExecutor {
             }
         );
 
+// =========================
+// ACTIVE USER CHECK
+// =========================
 
+if (context.userId && context.tenantId) {
+
+    const user =
+        await userRepository.findById(
+            context.userId,
+            context.tenantId
+        );
+
+    if (!user) {
+
+        console.log(
+            "❌ User tidak ditemukan:",
+            {
+                userId:
+                    context.userId,
+
+                tenantId:
+                    context.tenantId
+            }
+        );
+
+        await context.reply(
+            "❌ User tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    console.log(
+        "🔎 ACTIVE USER CHECK:",
+        {
+            userId:
+                user.id,
+
+            tenantId:
+                user.tenantId,
+
+            active:
+                user.active
+        }
+    );
+
+
+    if (!user.active) {
+
+        console.log(
+            "🚫 DISABLED USER BLOCKED:",
+            {
+                userId:
+                    user.id,
+
+                tenantId:
+                    user.tenantId
+            }
+        );
+
+        await context.reply(
+            "❌ Akun kamu sedang dinonaktifkan."
+        );
+
+        return;
+    }
+
+}
         // =========================
         // DATABASE PERMISSION CHECK
         // =========================

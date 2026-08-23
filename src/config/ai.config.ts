@@ -6,16 +6,14 @@ export const aiConfig = {
         process.env.AI_PROVIDER ??
         "gemini",
 
-    // Model utama untuk chat
     model:
         process.env.AI_MODEL ??
         "gemini-flash-latest",
 
-    // Model khusus planner
-   plannerModel:
-    process.env.AI_PLANNER_MODEL ??
-    process.env.AI_MODEL ??
-    "gemini-flash-latest",
+    plannerModel:
+        process.env.AI_PLANNER_MODEL ??
+        process.env.AI_MODEL ??
+        "gemini-flash-latest",
 
     geminiKey:
         process.env.GEMINI_API_KEY ??
@@ -25,7 +23,7 @@ export const aiConfig = {
         process.env.OPENAI_API_KEY ??
         "",
 
-    claudeKey:
+       claudeKey:
         process.env.CLAUDE_API_KEY ??
         "",
 
@@ -34,5 +32,3 @@ export const aiConfig = {
         ""
 
 };
-
-console.log(aiConfig);
