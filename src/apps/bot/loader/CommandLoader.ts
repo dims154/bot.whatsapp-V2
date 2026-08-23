@@ -19,6 +19,8 @@ import { CreateRoleCommand } from "../commands/create-role.command";
 import { AssignRolePermissionCommand } from "../commands/assign-role-permission.command";
 import { PermissionsCommand } from "../commands/permissions.command";
 import { PermissionCommand } from "../commands/permission.command";
+import { CreatePermissionCommand } from "../commands/create-permission.command";
+import { DeletePermissionCommand } from "../commands/delete-permission.command";
 
 export class CommandLoader {
 
@@ -130,6 +132,14 @@ this.registry.register(
 
 this.registry.register(
     new PermissionCommand()
+);
+
+this.registry.register(
+    new CreatePermissionCommand()
+);
+
+this.registry.register(
+    new DeletePermissionCommand()
 );
         // =========================
         // HELP & MENU
