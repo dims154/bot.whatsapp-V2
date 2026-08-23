@@ -16,6 +16,9 @@ import { DeleteUserCommand } from "../commands/delete-user.command";
 import { RolesCommand } from "../commands/roles.command";
 import { RoleCommand } from "../commands/role.command";
 import { CreateRoleCommand } from "../commands/create-role.command";
+import { AssignRolePermissionCommand } from "../commands/assign-role-permission.command";
+import { PermissionsCommand } from "../commands/permissions.command";
+import { PermissionCommand } from "../commands/permission.command";
 
 export class CommandLoader {
 
@@ -105,6 +108,10 @@ this.registry.register(
     new CreateRoleCommand()
 );
 
+this.registry.register(
+    new AssignRolePermissionCommand()
+);
+
         // =========================
         // OWNER
         // =========================
@@ -113,6 +120,17 @@ this.registry.register(
             new OwnerCommand()
         );
 
+        // =========================
+// PERMISSION
+// =========================
+
+this.registry.register(
+    new PermissionsCommand()
+);
+
+this.registry.register(
+    new PermissionCommand()
+);
         // =========================
         // HELP & MENU
         // =========================
@@ -130,3 +148,4 @@ this.registry.register(
         );
     }
 }
+
