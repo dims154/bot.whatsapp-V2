@@ -13,7 +13,7 @@ export class DeletePermissionCommand implements ICommand {
 
     category = "permission";
 
-    permission = "permission.delete";
+    permission = "permission.delete" as const;
 
     cooldown = 3;
 

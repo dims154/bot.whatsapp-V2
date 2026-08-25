@@ -9,7 +9,7 @@ export class OwnerCommand implements ICommand {
 
     category = "owner";
 
-    permission = "owner";
+    permission = "owner" as const;
 
     cooldown = 3;
 

@@ -14,7 +14,7 @@ export class CreateRoleCommand implements ICommand {
 
     category = "role";
 
-    permission = "role.create";
+    permission = "role.create" as const;
 
     cooldown = 3;
 

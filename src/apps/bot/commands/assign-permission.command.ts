@@ -15,7 +15,7 @@ export class AssignPermissionCommand implements ICommand {
 
     category = "user";
 
-    permission = "user.assign_permissions";
+    permission = "user.assign_permissions" as const;
 
     cooldown = 3;
 

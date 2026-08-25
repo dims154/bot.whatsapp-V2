@@ -13,7 +13,7 @@ export class DisableUserCommand implements ICommand {
 
     category = "user";
 
-    permission = "user.update";
+    permission = "user.update" as const;
 
     cooldown = 3;
 

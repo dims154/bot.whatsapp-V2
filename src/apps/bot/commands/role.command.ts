@@ -14,7 +14,7 @@ export class RoleCommand implements ICommand {
 
     category = "role";
 
-    permission = "role.read";
+    permission = "role.read" as const;
 
     cooldown = 3;
 

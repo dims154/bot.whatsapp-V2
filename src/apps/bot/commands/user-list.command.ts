@@ -10,7 +10,7 @@ export class UserListCommand implements ICommand {
 
     category = "user";
 
-    permission = "user.read";
+    permission = "user.read" as const;
 
     cooldown = 3;
 

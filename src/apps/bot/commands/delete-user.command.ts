@@ -14,7 +14,7 @@ export class DeleteUserCommand implements ICommand {
 
     category = "user";
 
-    permission = "user.delete";
+    permission = "user.delete" as const;
 
     cooldown = 3;
 
@@ -144,7 +144,8 @@ ${whatsappNumber}`
             // ====================================
 
             await userRepository.delete(
-                user.id
+                user.id,
+                context.tenantId
             );
 
 

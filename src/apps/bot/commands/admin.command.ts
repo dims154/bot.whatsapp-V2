@@ -9,7 +9,7 @@ export class AdminCommand implements ICommand {
 
     category = "admin";
 
-    permission = "admin";
+    permission = "admin" as const;
 
     cooldown = 3;
 

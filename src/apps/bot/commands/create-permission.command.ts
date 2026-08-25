@@ -13,7 +13,7 @@ export class CreatePermissionCommand implements ICommand {
 
     category = "permission";
 
-    permission = "permission.create";
+    permission = "permission.create" as const;
 
     cooldown = 3;
 

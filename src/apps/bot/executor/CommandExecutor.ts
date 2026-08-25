@@ -105,6 +105,21 @@ export class CommandExecutor {
             return;
         }
 
+        const isPublicCommand =
+            command.permission === "user" ||
+            command.permission === "everyone";
+
+        if (
+            !isPublicCommand &&
+            (!context.userId || !context.tenantId)
+        ) {
+            await context.reply(
+                "❌ User tidak ditemukan."
+            );
+
+            return;
+        }
+
 
         // =========================
         // DEBUG COMMAND
@@ -212,11 +227,39 @@ if (context.userId && context.tenantId) {
         // DATABASE PERMISSION CHECK
         // =========================
 
+        const authenticatedUser =
+            context.userId && context.tenantId
+                ? await userRepository.findById(
+                    context.userId,
+                    context.tenantId
+                )
+                : null;
+
+        const databaseRoles =
+            authenticatedUser?.roles.map(
+                role => role.name
+            ) ?? [];
+
+        const databasePermissions = [
+            ...(authenticatedUser?.permissions.map(
+                permission => permission.name
+            ) ?? []),
+            ...(authenticatedUser?.roles.flatMap(
+                role => role.permissions.map(
+                    permission => permission.name
+                )
+            ) ?? [])
+        ];
+
         const hasPermission =
             PermissionResolver.has(
-                context.permissions,
+                isPublicCommand
+                    ? context.permissions
+                    : databasePermissions,
                 command.permission,
-                context.roles
+                isPublicCommand
+                    ? context.roles
+                    : databaseRoles
             );
 
 

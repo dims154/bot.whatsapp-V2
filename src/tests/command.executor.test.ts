@@ -10,7 +10,7 @@ import { ICommand } from "../apps/bot/commands/interfaces/ICommand";
 
 function createCommand(
     name: string,
-    permission: string
+    permission: "user" | "everyone" | "admin" | "owner" | `${string}.${string}`
 ): ICommand {
 
     return {

@@ -264,9 +264,7 @@ async function main() {
     const registry =
         new CommandRegistry();
 
-        const loader = new CommandLoader(registry);
-
-loader.load();
+  const loader = new CommandLoader(registry);
 
 loader.load();
 

@@ -14,7 +14,7 @@ export class AssignRoleCommand implements ICommand {
 
     category = "user";
 
-    permission = "user.assign_roles";
+    permission = "user.assign_roles" as const;
 
     cooldown = 3;
 

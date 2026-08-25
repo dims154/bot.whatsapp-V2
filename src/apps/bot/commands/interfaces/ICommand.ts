@@ -37,7 +37,12 @@ export interface ICommand {
      * admin
      * owner
      */
-    permission: string;
+    permission:
+        | "user"
+        | "everyone"
+        | "admin"
+        | "owner"
+        | `${string}.${string}`;
 
     /**
      * Cooldown dalam detik
