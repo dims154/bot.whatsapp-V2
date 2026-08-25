@@ -1,5 +1,9 @@
 export interface CommandContextData {
 
+    // =========================
+    // MESSAGE
+    // =========================
+
     sender: string;
 
     chatId: string;
@@ -12,8 +16,56 @@ export interface CommandContextData {
 
     isGroup: boolean;
 
+
+    // =========================
+    // LEGACY ROLE FLAGS
+    // =========================
+
     isAdmin: boolean;
 
     isOwner: boolean;
+
+
+    // =========================
+    // DATABASE IDENTITY
+    // =========================
+
+    /**
+     * ID user dari database.
+     */
+    userId?: string;
+
+    /**
+     * ID tenant tempat user terdaftar.
+     */
+    tenantId?: string;
+
+
+    // =========================
+    // DATABASE AUTHORIZATION
+    // =========================
+
+    /**
+     * Role yang dimiliki user.
+     *
+     * Contoh:
+     * ["Owner"]
+     */
+    roles?: string[];
+
+    /**
+     * Permission gabungan:
+     *
+     * - direct permission
+     * - permission dari role
+     *
+     * Contoh:
+     * [
+     *   "user.create",
+     *   "user.read",
+     *   "user.update"
+     * ]
+     */
+    permissions?: string[];
 
 }

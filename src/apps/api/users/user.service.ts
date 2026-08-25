@@ -164,7 +164,7 @@ export const userService = {
             return null;
         }
 
-        return userRepository.delete(id);
+        return userRepository.delete(id, tenantId);
     },
 
     // =========================
@@ -189,7 +189,8 @@ export const userService = {
 
         return userRepository.assignRoles(
             id,
-            roleIds
+            roleIds,
+            tenantId
         );
     },
 
@@ -215,7 +216,8 @@ export const userService = {
 
         return userRepository.assignPermissions(
             id,
-            permissionIds
+            permissionIds,
+            tenantId
         );
     },
 

@@ -1,18 +1,24 @@
 import { CommandContext } from "../context/CommandContext";
 import { config } from "../../../config/environment";
+import { UserResolver } from "../auth/UserResolver";
 
 export class MetaParser {
 
-    static parse(payload: any): CommandContext | null {
+    static async parse(
+        payload: any
+    ): Promise<CommandContext | null> {
 
         // =========================
-        // AMBIL MESSAGE
+        // GET MESSAGE
         // =========================
 
         const message =
-            payload?.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+            payload?.entry?.[0]
+                ?.changes?.[0]
+                ?.value?.messages?.[0];
 
         if (!message) {
+
             console.log(
                 "⚠️ MetaParser: message tidak ditemukan"
             );
@@ -28,25 +34,14 @@ export class MetaParser {
             message.from ?? "";
 
         // =========================
-        // TEXT MESSAGE
+        // TEXT
         // =========================
 
         const text =
             message.text?.body?.trim() ?? "";
 
         // =========================
-        // PARSE ARGUMENTS
-        // =========================
-        //
-        // Contoh:
-        //
-        // /ai Halo siapa kamu?
-        //
-        // menjadi:
-        //
-        // command = ai
-        // args = ["Halo", "siapa", "kamu?"]
-        //
+        // ARGS
         // =========================
 
         const parts =
@@ -58,14 +53,6 @@ export class MetaParser {
             parts.length > 1
                 ? parts.slice(1)
                 : [];
-
-        // =========================
-        // OWNER NUMBER
-        // =========================
-
-        const ownerNumber =
-            config.whatsapp.ownerNumber
-                ?.trim() ?? "";
 
         // =========================
         // NORMALIZE NUMBER
@@ -86,57 +73,141 @@ export class MetaParser {
             if (
                 digits.startsWith("0")
             ) {
-                return (
-                    `62${digits.slice(1)}`
-                );
+
+                return `62${digits.slice(1)}`;
             }
 
             return digits;
         };
 
-        // =========================
-        // ROLE RESOLVER
-        // =========================
-
-        const normSender =
+        const normalizedSender =
             normalizeNumber(sender);
 
-        const normOwner =
-            normalizeNumber(ownerNumber);
+        // =========================
+        // TENANT
+        // =========================
 
-        const isOwner =
-            normOwner !== "" &&
-            normSender === normOwner;
+        const tenantId =
+            config.bot.tenantId;
 
-        // Untuk sementara:
-        // Owner otomatis dianggap admin
-        const isAdmin =
-            isOwner;
+        if (!tenantId) {
+
+            console.error(
+                "❌ BOT_TENANT_ID belum dikonfigurasi"
+            );
+
+            return null;
+        }
 
         // =========================
-        // DEBUG PARSER
+        // USER RESOLVER
+        // =========================
+
+        const user =
+            await UserResolver.resolve(
+                normalizedSender,
+                tenantId
+            );
+
+        // =========================
+        // USER TIDAK DITEMUKAN
+        // =========================
+
+        if (!user) {
+
+            console.log(
+                "🚫 WhatsApp user belum terdaftar:",
+                {
+                    sender:
+                        normalizedSender,
+                    tenantId
+                }
+            );
+
+            return new CommandContext({
+
+                sender,
+
+                chatId:
+                    sender,
+
+                messageId:
+                    message.id,
+
+                text,
+
+                args,
+
+                isGroup:
+                    false,
+
+                isAdmin:
+                    false,
+
+                isOwner:
+                    false,
+
+                userId:
+                    undefined,
+
+                tenantId,
+
+                roles: [],
+
+                permissions: []
+
+            });
+        }
+
+        // =========================
+        // ROLE
+        // =========================
+
+        const isOwner =
+            user.roles.some(
+                role =>
+                    role.toLowerCase() ===
+                    "owner"
+            );
+
+        const isAdmin =
+            isOwner ||
+            user.roles.some(
+                role =>
+                    role.toLowerCase() ===
+                    "admin"
+            );
+
+        // =========================
+        // DEBUG
         // =========================
 
         console.log(
-            "👤 Role Resolver:",
+            "🔐 Database Role Resolver:",
             {
-                sender,
-                ownerNumber,
+                sender:
+                    normalizedSender,
+
+                userId:
+                    user.id,
+
+                tenantId:
+                    user.tenantId,
+
+                roles:
+                    user.roles,
+
+                permissions:
+                    user.permissions,
+
                 isAdmin,
+
                 isOwner
             }
         );
 
-        console.log(
-            "📝 MetaParser:",
-            {
-                text,
-                args
-            }
-        );
-
         // =========================
-        // BUILD COMMAND CONTEXT
+        // COMMAND CONTEXT
         // =========================
 
         return new CommandContext({
@@ -158,7 +229,19 @@ export class MetaParser {
 
             isAdmin,
 
-            isOwner
+            isOwner,
+
+            userId:
+                user.id,
+
+            tenantId:
+                user.tenantId,
+
+            roles:
+                user.roles,
+
+            permissions:
+                user.permissions
 
         });
     }

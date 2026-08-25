@@ -11,7 +11,7 @@ export class PingCommand implements ICommand {
 
     category = "General";
 
-    permission = "everyone";
+    permission = "everyone" as const;
 
     cooldown = 0;
 

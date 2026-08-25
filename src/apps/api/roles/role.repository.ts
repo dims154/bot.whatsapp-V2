@@ -1,5 +1,16 @@
 import { prismaService } from '../../../database/prisma.service';
 
+const validatePermissionIds = async (permissionIds: string[], tenantId: string) => {
+  const permissions = await prismaService.client.permission.findMany({
+    where: { id: { in: permissionIds }, tenantId },
+    select: { id: true },
+  });
+
+  if (permissions.length !== new Set(permissionIds).size) {
+    throw new Error('PERMISSION_NOT_FOUND_OR_WRONG_TENANT');
+  }
+};
+
 export const roleRepository = {
   findAll: async (tenantId: string) => {
     return prismaService.client.role.findMany({
@@ -19,12 +30,39 @@ export const roleRepository = {
       include: { permissions: true },
     });
   },
+  // =========================
+// FIND BY NAME
+// =========================
+
+findByName: async (
+    name: string,
+    tenantId: string
+) => {
+
+    return prismaService.client.role.findFirst({
+
+        where: {
+            name,
+            tenantId
+        },
+
+        include: {
+            permissions: true
+        },
+
+    });
+
+},
   create: async (data: {
     tenantId: string;
     name: string;
     description?: string;
     permissionIds?: string[];
   }) => {
+    if (data.permissionIds) {
+      await validatePermissionIds(data.permissionIds, data.tenantId);
+    }
+
     return prismaService.client.role.create({
       data: {
         tenantId: data.tenantId,
@@ -47,6 +85,10 @@ export const roleRepository = {
     });
     if (!existing) {
       return null;
+    }
+
+    if (data.permissionIds) {
+      await validatePermissionIds(data.permissionIds, tenantId);
     }
 
     return prismaService.client.role.update({

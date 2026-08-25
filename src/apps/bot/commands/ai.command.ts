@@ -14,7 +14,7 @@ export class AICommand implements ICommand {
 
     category = "AI";
 
-    permission = "everyone";
+    permission = "everyone" as const;
 
     cooldown = 0;
 

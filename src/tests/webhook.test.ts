@@ -25,7 +25,7 @@ const payload = {
 
 (async () => {
 
-    const context = MetaParser.parse(payload);
+    const context = await MetaParser.parse(payload);
 
     if (!context) {
         return;

@@ -12,7 +12,7 @@ export class HelpCommand implements ICommand {
 
     category = "general";
 
-    permission = "user";
+    permission = "user" as const;
 
     cooldown = 3;
 
