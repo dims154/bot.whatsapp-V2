@@ -281,7 +281,36 @@ export const userRepository = {
 
     ) => {
 
-        return prismaService.client.user.create({
+        const roleIds = data.roleIds ?? [];
+        const permissionIds = data.permissionIds ?? [];
+
+        return prismaService.client.$transaction(async (transaction) => {
+            const [roles, permissions] = await Promise.all([
+                transaction.role.findMany({
+                    where: {
+                        id: { in: roleIds },
+                        tenantId: data.tenantId
+                    },
+                    select: { id: true }
+                }),
+                transaction.permission.findMany({
+                    where: {
+                        id: { in: permissionIds },
+                        tenantId: data.tenantId
+                    },
+                    select: { id: true }
+                })
+            ]);
+
+            if (roles.length !== new Set(roleIds).size) {
+                throw new Error("ROLE_NOT_FOUND_OR_WRONG_TENANT");
+            }
+
+            if (permissions.length !== new Set(permissionIds).size) {
+                throw new Error("PERMISSION_NOT_FOUND_OR_WRONG_TENANT");
+            }
+
+            return transaction.user.create({
 
             data: {
 
@@ -377,6 +406,7 @@ export const userRepository = {
 
             }
 
+            });
         });
 
     },
@@ -390,9 +420,51 @@ export const userRepository = {
 
         id: string,
 
-        data: UpdateUserData
+        data: UpdateUserData,
+
+        tenantId: string
 
     ) => {
+
+        const user = await prismaService.client.user.findFirst({
+            where: { id, tenantId },
+            select: { id: true }
+        });
+
+        if (!user) {
+            return null;
+        }
+
+        const roleIds = data.roles?.set.map(({ id: roleId }) => roleId);
+        const permissionIds = data.permissions?.set.map(({ id: permissionId }) => permissionId);
+
+        if (roleIds) {
+            const roles = await prismaService.client.role.findMany({
+                where: {
+                    id: { in: roleIds },
+                    tenantId
+                },
+                select: { id: true }
+            });
+
+            if (roles.length !== new Set(roleIds).size) {
+                throw new Error("ROLE_NOT_FOUND_OR_WRONG_TENANT");
+            }
+        }
+
+        if (permissionIds) {
+            const permissions = await prismaService.client.permission.findMany({
+                where: {
+                    id: { in: permissionIds },
+                    tenantId
+                },
+                select: { id: true }
+            });
+
+            if (permissions.length !== new Set(permissionIds).size) {
+                throw new Error("PERMISSION_NOT_FOUND_OR_WRONG_TENANT");
+            }
+        }
 
         const payload: UpdateUserData = {
 
@@ -445,7 +517,8 @@ export const userRepository = {
 
             where: {
 
-                id
+                id,
+                tenantId
 
             },
 
