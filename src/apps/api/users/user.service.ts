@@ -141,7 +141,8 @@ export const userService = {
 
         return userRepository.update(
             id,
-            updatePayload
+            updatePayload,
+            tenantId
         );
     },
 

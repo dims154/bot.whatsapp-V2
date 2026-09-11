@@ -34,6 +34,20 @@ export class MetaParser {
             message.from ?? "";
 
         // =========================
+        // META PHONE NUMBER ID
+        // =========================
+
+        const phoneNumberId =
+            payload?.entry?.[0]
+                ?.changes?.[0]
+                ?.value?.metadata?.phone_number_id ?? "";
+
+        console.log(
+            "📱 Meta Phone Number ID:",
+            phoneNumberId
+        );
+
+        // =========================
         // TEXT
         // =========================
 
@@ -120,7 +134,10 @@ export class MetaParser {
                 {
                     sender:
                         normalizedSender,
-                    tenantId
+
+                    tenantId,
+
+                    phoneNumberId
                 }
             );
 
@@ -130,6 +147,8 @@ export class MetaParser {
 
                 chatId:
                     sender,
+
+                phoneNumberId,
 
                 messageId:
                     message.id,
@@ -194,6 +213,8 @@ export class MetaParser {
                 tenantId:
                     user.tenantId,
 
+                phoneNumberId,
+
                 roles:
                     user.roles,
 
@@ -216,6 +237,8 @@ export class MetaParser {
 
             chatId:
                 sender,
+
+            phoneNumberId,
 
             messageId:
                 message.id,

@@ -8,6 +8,11 @@ export interface CommandContextData {
 
     chatId: string;
 
+    /**
+     * ID nomor WhatsApp dari Meta Cloud API.
+     */
+    phoneNumberId?: string;
+
     messageId: string;
 
     text: string;

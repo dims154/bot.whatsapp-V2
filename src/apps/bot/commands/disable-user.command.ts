@@ -146,9 +146,16 @@ ${user.whatsappNumber ?? "-"}`
 
                     {
                         active: false
-                    }
+                    },
+
+                    user.tenantId
 
                 );
+
+            if (!updatedUser) {
+                await context.reply("❌ User tidak ditemukan.");
+                return;
+            }
 
 
             // ====================================

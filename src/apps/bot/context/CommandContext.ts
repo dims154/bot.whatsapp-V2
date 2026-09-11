@@ -12,6 +12,8 @@ export class CommandContext implements ICommandContext {
 
     chatId: string;
 
+    phoneNumberId: string;
+
     messageId: string;
 
     text: string;
@@ -61,6 +63,9 @@ export class CommandContext implements ICommandContext {
 
         this.chatId =
             data.chatId;
+
+        this.phoneNumberId =
+            data.phoneNumberId ?? '';
 
         this.messageId =
             data.messageId;
