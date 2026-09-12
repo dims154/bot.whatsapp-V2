@@ -16,6 +16,9 @@ export class ChannelResolver {
     const channels = await prismaService.client.channel.findMany({
       where: {
         active: true,
+        business: {
+          active: true,
+        },
         provider: {
           type: "meta-cloud",
           active: true,
