@@ -1,6 +1,6 @@
 import { CommandContext } from "../context/CommandContext";
-import { config } from "../../../config/environment";
 import { UserResolver } from "../auth/UserResolver";
+import { ChannelResolver } from "../auth/ChannelResolver";
 
 export class MetaParser {
 
@@ -101,18 +101,25 @@ export class MetaParser {
         // TENANT
         // =========================
 
-        const tenantId =
-            config.bot.tenantId;
+        const channel =
+            await ChannelResolver.resolveByPhoneNumberId(
+                phoneNumberId
+            );
 
-        if (!tenantId) {
-
+        if (!channel) {
             console.error(
-                "❌ BOT_TENANT_ID belum dikonfigurasi"
+                `❌ Tidak ada channel aktif untuk phoneNumberId: ${phoneNumberId}`
             );
 
             return null;
         }
 
+        const tenantId = channel.tenantId;
+
+        console.log("🏢 Tenant resolved:", tenantId);
+        console.log("📡 Channel resolved:", channel.channelId);
+        console.log("💼 Business resolved:", channel.businessId);
+        
         // =========================
         // USER RESOLVER
         // =========================
