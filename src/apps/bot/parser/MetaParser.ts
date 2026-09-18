@@ -43,8 +43,7 @@ export class MetaParser {
                 ?.value?.metadata?.phone_number_id ?? "";
 
         console.log(
-            "📱 Meta Phone Number ID:",
-            phoneNumberId
+            "📱 Meta Phone Number ID: [redacted]"
         );
 
         // =========================
@@ -108,7 +107,7 @@ export class MetaParser {
 
         if (!channel) {
             console.error(
-                `❌ Tidak ada channel aktif untuk phoneNumberId: ${phoneNumberId}`
+                "❌ Tidak ada channel aktif untuk phoneNumberId: [redacted]"
             );
 
             return null;
@@ -116,9 +115,9 @@ export class MetaParser {
 
         const tenantId = channel.tenantId;
 
-        console.log("🏢 Tenant resolved:", tenantId);
-        console.log("📡 Channel resolved:", channel.channelId);
-        console.log("💼 Business resolved:", channel.businessId);
+        console.log("🏢 Tenant resolved: [redacted]");
+        console.log("📡 Channel resolved: [redacted]");
+        console.log("💼 Business resolved: [redacted]");
         
         // =========================
         // USER RESOLVER
@@ -137,15 +136,7 @@ export class MetaParser {
         if (!user) {
 
             console.log(
-                "🚫 WhatsApp user belum terdaftar:",
-                {
-                    sender:
-                        normalizedSender,
-
-                    tenantId,
-
-                    phoneNumberId
-                }
+                "🚫 WhatsApp user belum terdaftar: [redacted]"
             );
 
             return new CommandContext({
@@ -211,26 +202,12 @@ export class MetaParser {
         console.log(
             "🔐 Database Role Resolver:",
             {
-                sender:
-                    normalizedSender,
-
-                userId:
-                    user.id,
-
-                tenantId:
-                    user.tenantId,
-
-                phoneNumberId,
-
-                roles:
-                    user.roles,
-
-                permissions:
-                    user.permissions,
-
                 isAdmin,
-
-                isOwner
+                isOwner,
+                roleCount:
+                    user.roles.length,
+                permissionCount:
+                    user.permissions.length
             }
         );
 

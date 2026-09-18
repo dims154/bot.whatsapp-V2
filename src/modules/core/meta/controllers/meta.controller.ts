@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { createHmac, timingSafeEqual } from "crypto";
+import type {} from "../../../../types/express";
 import { config } from "../../../../config/environment";
 import { dispatcher } from "../../../../apps/bot/bot.container";
 import { MetaParser } from "../../../../apps/bot/parser/MetaParser";
@@ -13,9 +15,7 @@ export class MetaController {
 
         console.log({
             mode,
-            token,
-            challenge,
-            envToken: config.whatsapp.verifyToken
+            challenge
         });
 
         if (
@@ -35,8 +35,36 @@ export class MetaController {
         res: Response
     ): Promise<Response> {
 
+        const signature = req.get("X-Hub-Signature-256");
+        const appSecret = config.whatsapp.appSecret;
+        const rawBody = req.rawBody;
+
+        if (!signature || !appSecret || !rawBody) {
+            return res.sendStatus(403);
+        }
+
+        const expectedSignature = createHmac(
+            "sha256",
+            appSecret
+        )
+            .update(rawBody)
+            .digest("hex");
+
+        const receivedSignature = signature.startsWith("sha256=")
+            ? signature.slice("sha256=".length)
+            : "";
+
+        const expectedBuffer = Buffer.from(expectedSignature, "hex");
+        const receivedBuffer = Buffer.from(receivedSignature, "hex");
+
+        if (
+            expectedBuffer.length !== receivedBuffer.length ||
+            !timingSafeEqual(expectedBuffer, receivedBuffer)
+        ) {
+            return res.sendStatus(403);
+        }
+
         console.log("========= META WEBHOOK =========");
-        console.log(JSON.stringify(req.body, null, 2));
         console.log("===============================");
 
         try {
@@ -54,7 +82,12 @@ export class MetaController {
 
         } catch (error) {
 
-            console.error("❌ Dispatcher Error:", error);
+            console.error(
+                "❌ Dispatcher Error:",
+                error instanceof Error
+                    ? error.message
+                    : "Unknown error"
+            );
 
             return res.sendStatus(500);
 

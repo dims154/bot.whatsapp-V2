@@ -240,7 +240,7 @@ console.log(
                     true,
 
                 userId:
-                    "TEST_OWNER",
+                    owner.id,
 
                 tenantId:
                     tenant.id,

@@ -123,10 +123,11 @@ export class CommandContext implements ICommandContext {
         message: string
     ): Promise<void> {
 
-        await messageProvider.sendMessage(
-            this.chatId,
-            message
-        );
+       await messageProvider.sendMessage(
+    this.chatId,
+    message,
+    this.phoneNumberId
+);
 
     }
 

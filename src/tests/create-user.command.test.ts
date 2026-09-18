@@ -48,8 +48,39 @@ async function test() {
         // TENANT
         // ====================================
 
+        const owner =
+            await prismaService.client.user.findUnique({
+
+                where: {
+
+                    email:
+                        "owner@erp.local"
+
+                }
+
+            });
+
+
+        if (!owner) {
+
+            throw new Error(
+                "Owner utama owner@erp.local tidak ditemukan."
+            );
+
+        }
+
+
         const tenant =
-            await prismaService.client.tenant.findFirst();
+            await prismaService.client.tenant.findUnique({
+
+                where: {
+
+                    id:
+                        owner.tenantId
+
+                }
+
+            });
 
 
         if (!tenant) {
@@ -135,7 +166,7 @@ async function test() {
                     true,
 
                 userId:
-                    "46f09034-2cb7-48ce-981d-59669f907b0c",
+                    owner.id,
 
                 tenantId:
                     tenant.id,

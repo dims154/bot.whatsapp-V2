@@ -50,14 +50,20 @@ export class MetaProvider implements IWhatsAppProvider {
     // GRAPH API URL
     // ==========================================
 
-    private getMessagesUrl(): string {
+   private getMessagesUrl(
+    phoneNumberId?: string
+): string {
 
-        return (
-            `https://graph.facebook.com/v23.0/` +
-            `${config.whatsapp.phoneNumberId}` +
-            `/messages`
-        );
-    }
+    const resolvedPhoneNumberId =
+        phoneNumberId ||
+        config.whatsapp.phoneNumberId;
+
+    return (
+        `https://graph.facebook.com/v23.0/` +
+        `${resolvedPhoneNumberId}` +
+        `/messages`
+    );
+}
 
     // ==========================================
     // ERROR LOGGER
@@ -97,15 +103,7 @@ export class MetaProvider implements IWhatsAppProvider {
             );
 
             console.error(
-                "Meta Response:"
-            );
-
-            console.error(
-                JSON.stringify(
-                    axiosError.response?.data,
-                    null,
-                    2
-                )
+                "Meta Response: [redacted]"
             );
 
             console.error(
@@ -114,23 +112,25 @@ export class MetaProvider implements IWhatsAppProvider {
             );
 
             console.error(
-                "Request URL:",
-                axiosError.config?.url
+                "Meta Graph API URL: [redacted]"
             );
 
             console.error(
-                "Request Data:"
-            );
-
-            console.error(
-                axiosError.config?.data
+                "Request Data: [redacted]"
             );
 
         } else {
 
+            const sanitizedMessage =
+                error instanceof Error
+                    ? error.message
+                    : typeof error === "string"
+                        ? error
+                        : "Unknown error";
+
             console.error(
                 "Unknown Error:",
-                error
+                sanitizedMessage
             );
         }
 
@@ -144,60 +144,58 @@ export class MetaProvider implements IWhatsAppProvider {
     // ==========================================
 
     async sendMessage(
-        to: string,
-        message: string
-    ): Promise<void> {
+    to: string,
+    message: string,
+    phoneNumberId?: string
+): Promise<void> {
 
-        const url =
-            this.getMessagesUrl();
+    const url =
+        this.getMessagesUrl(phoneNumberId);
 
-        console.log(
-            "📤 Meta sendMessage:",
+    console.log(
+        "📤 Meta sendMessage:",
+        {
+            to: "[redacted]",
+            message: "[redacted]",
+            phoneNumberId: "[redacted]"
+        }
+    );
+
+    try {
+
+        await axios.post(
+            url,
+
             {
+                messaging_product:
+                    "whatsapp",
+
                 to,
-                message,
-                phoneNumberId:
-                    config.whatsapp.phoneNumberId
-            }
+
+                type:
+                    "text",
+
+                text: {
+                    body: message
+                }
+            },
+
+            this.buildAxiosConfig()
         );
 
-        try {
+        console.log(
+            "✅ Meta sendMessage: success"
+        );
 
-            const response =
-                await axios.post(
-                    url,
+    } catch (error) {
 
-                    {
-                        messaging_product:
-                            "whatsapp",
+        this.logMetaError(
+            error
+        );
 
-                        to,
-
-                        type:
-                            "text",
-
-                        text: {
-                            body: message
-                        }
-                    },
-
-                    this.buildAxiosConfig()
-                );
-
-            console.log(
-                "✅ Meta sendMessage:",
-                response.data
-            );
-
-        } catch (error) {
-
-            this.logMetaError(
-                error
-            );
-
-            throw error;
-        }
+        throw error;
     }
+}
 
     // ==========================================
     // SEND IMAGE
@@ -215,46 +213,44 @@ export class MetaProvider implements IWhatsAppProvider {
         console.log(
             "📤 Meta sendImage:",
             {
-                to,
-                imageUrl,
-                caption
+                to: "[redacted]",
+                imageUrl: "[redacted]",
+                caption: "[redacted]"
             }
         );
 
         try {
 
-            const response =
-                await axios.post(
-                    url,
+            await axios.post(
+                url,
 
-                    {
-                        messaging_product:
-                            "whatsapp",
+                {
+                    messaging_product:
+                        "whatsapp",
 
-                        to,
+                    to,
 
-                        type:
-                            "image",
+                    type:
+                        "image",
 
-                        image: {
+                    image: {
 
-                            link:
-                                imageUrl,
+                        link:
+                            imageUrl,
 
-                            ...(caption
-                                ? {
-                                    caption
-                                }
-                                : {})
-                        }
-                    },
+                        ...(caption
+                            ? {
+                                caption
+                            }
+                            : {})
+                    }
+                },
 
-                    this.buildAxiosConfig()
-                );
+                this.buildAxiosConfig()
+            );
 
             console.log(
-                "✅ Meta sendImage:",
-                response.data
+                "✅ Meta sendImage: success"
             );
 
         } catch (error) {
@@ -283,46 +279,44 @@ export class MetaProvider implements IWhatsAppProvider {
         console.log(
             "📤 Meta sendDocument:",
             {
-                to,
-                documentUrl,
-                filename
+                to: "[redacted]",
+                documentUrl: "[redacted]",
+                filename: "[redacted]"
             }
         );
 
         try {
 
-            const response =
-                await axios.post(
-                    url,
+            await axios.post(
+                url,
 
-                    {
-                        messaging_product:
-                            "whatsapp",
+                {
+                    messaging_product:
+                        "whatsapp",
 
-                        to,
+                    to,
 
-                        type:
-                            "document",
+                    type:
+                        "document",
 
-                        document: {
+                    document: {
 
-                            link:
-                                documentUrl,
+                        link:
+                            documentUrl,
 
-                            ...(filename
-                                ? {
-                                    filename
-                                }
-                                : {})
-                        }
-                    },
+                        ...(filename
+                            ? {
+                                filename
+                            }
+                            : {})
+                    }
+                },
 
-                    this.buildAxiosConfig()
-                );
+                this.buildAxiosConfig()
+            );
 
             console.log(
-                "✅ Meta sendDocument:",
-                response.data
+                "✅ Meta sendDocument: success"
             );
 
         } catch (error) {
@@ -340,20 +334,18 @@ export class MetaProvider implements IWhatsAppProvider {
     // ==========================================
 
     async receiveMessage(
-        payload: unknown
+        payload?: unknown
     ): Promise<void> {
 
         console.log(
             "========= META RECEIVE MESSAGE ========="
         );
 
-        console.log(
-            JSON.stringify(
-                payload,
-                null,
-                2
-            )
-        );
+        if (payload !== undefined) {
+            console.log(
+                "Inbound Meta payload: [redacted]"
+            );
+        }
 
         console.log(
             "========================================"
