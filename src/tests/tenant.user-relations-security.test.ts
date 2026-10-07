@@ -1,3 +1,4 @@
+import { test } from "node:test";
 import { prismaService } from "../database/prisma.service";
 import { userRepository } from "../apps/api/users/user.repository";
 import { userService } from "../apps/api/users/user.service";
@@ -13,7 +14,7 @@ async function expectRejected(action: () => Promise<unknown>, label: string) {
     }
 }
 
-async function main() {
+test("tenant user relation isolation", async () => {
     const prisma = prismaService.client;
     const suffix = Date.now().toString();
     let tenantAId: string | undefined;
@@ -125,9 +126,4 @@ async function main() {
         }
         await prismaService.disconnect();
     }
-}
-
-main().catch((error) => {
-    console.error(error);
-    process.exit(1);
 });
