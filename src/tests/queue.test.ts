@@ -1,44 +1,36 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
 import { QueueManager } from "../apps/bot/queue/interfaces/QueueManager";
 import { IQueueJob } from "../apps/bot/queue/interfaces/IQueueJob";
 
-const queue = new QueueManager();
+describe("QueueManager", () => {
+  it("accepts jobs and start resolves without hanging the process", async () => {
+    const queue = new QueueManager();
+    const executed: string[] = [];
 
-queue.add({
-    id: "1",
-    type: "TEST",
-    payload: {},
-    createdAt: new Date(),
+    const makeJob = (id: string): IQueueJob =>
+      ({
+        id,
+        type: "TEST",
+        payload: {},
+        createdAt: new Date(),
+        async execute() {
+          executed.push(id);
+        },
+      }) as IQueueJob;
 
-    async execute() {
-        console.log("✅ Job 1 berjalan");
-    }
+    queue.add(makeJob("1"));
+    queue.add(makeJob("2"));
+    queue.add(makeJob("3"));
 
-} as IQueueJob);
+    // Timeout guard: jika start() tidak pernah selesai, test gagal (bukan hang selamanya)
+    const startPromise = queue.start();
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("QueueManager.start() timed out after 3s")), 3000)
+    );
 
-queue.add({
-    id: "2",
-    type: "TEST",
-    payload: {},
-    createdAt: new Date(),
+    await Promise.race([startPromise, timeoutPromise]);
 
-    async execute() {
-        console.log("✅ Job 2 berjalan");
-    }
-
-} as IQueueJob);
-
-queue.add({
-    id: "3",
-    type: "TEST",
-    payload: {},
-    createdAt: new Date(),
-
-    async execute() {
-        console.log("✅ Job 3 berjalan");
-    }
-
-} as IQueueJob);
-
-(async () => {
-    await queue.start();
-})();
+    assert.deepEqual(executed, ["1", "2", "3"]);
+  });
+});
